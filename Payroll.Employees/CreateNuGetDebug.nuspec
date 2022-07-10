@@ -6,6 +6,7 @@
     <authors>you must give a list of author(s)</authors>
     <description>you must provide a description of the NuGet</description>
     <releaseNotes>optional: what is changed in this release?</releaseNotes>
+    <repository type="git" url="https://github.com/forestcorgii/Payroll.Employees.git" />
     <dependencies>
       <group targetFramework="net5.0">
         <dependency id="Newtonsoft.Json" version="13.0.1" />
