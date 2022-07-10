@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Payroll.Employees.ServiceLayer.HRMS\Payroll.Employees.ServiceLayer.HRMS.csproj" />
+    <ProjectReference Include="..\Payroll.Employees.ServiceLayer\Payroll.Employees.ServiceLayer.EfCore.csproj" />
+  </ItemGroup>
+
+</Project>

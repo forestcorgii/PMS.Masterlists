@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Payroll.Employee.Domain\Payroll.Employees.Domain.csproj" />
+    <ProjectReference Include="..\Payroll.Employee.ServiceLayer.HRMS\Payroll.Employees.ServiceLayer.HRMS.csproj" />
+    <ProjectReference Include="..\Payroll.Employees.Common\Payroll.Employees.ServiceLayer.Common.csproj" />
+    <ProjectReference Include="..\Payroll.Employees.Persistence\Payroll.Employees.Persistence.csproj" />
+    <ProjectReference Include="..\Payroll.Employees.ServiceLayer\Payroll.Employees.ServiceLayer.EfCore.csproj" />
+  </ItemGroup>
+
+</Project>

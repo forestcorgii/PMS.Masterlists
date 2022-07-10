@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Payroll.Employees</id>
+    <version>1.0.0-preview001</version>
+    <authors>you must give a list of author(s)</authors>
+    <description>you must provide a description of the NuGet</description>
+    <releaseNotes>optional: what is changed in this release?</releaseNotes>
+    <dependencies>
+      <group targetFramework="net5.0">
+        <dependency id="Newtonsoft.Json" version="13.0.1" />
+        <dependency id="Microsoft.EntityFrameworkCore" version="5.0.17" />
+        <dependency id="Microsoft.EntityFrameworkCore.Abstractions" version="5.0.17" />
+        <dependency id="Microsoft.EntityFrameworkCore.Design" version="5.0.17" />
+        <dependency id="Microsoft.EntityFrameworkCore.Proxies" version="5.0.17" />
+        <dependency id="Microsoft.EntityFrameworkCore.Relational" version="5.0.17" />
+        <dependency id="MySql.EntityFrameworkCore" version="5.0.13" />
+        <dependency id="Microsoft.Extensions.Configuration" version="6.0.1" />
+        <dependency id="Microsoft.Extensions.Configuration.Binder" version="6.0.0" />
+        <dependency id="Microsoft.Extensions.Configuration.UserSecrets" version="6.0.1" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\Payroll.Employees\bin\Debug\net5.0\Payroll.Employees.dll" target="lib\net5.0" />
+    <file src="..\Payroll.Employees\bin\Debug\net5.0\Payroll.Employees.pdb" target="lib\net5.0" />
+    <file src="..\Payroll.Employees.Common\bin\Debug\net5.0\Payroll.Employees.ServiceLayer.Common.dll" target="lib\net5.0" />
+    <file src="..\Payroll.Employees.Common\bin\Debug\net5.0\Payroll.Employees.ServiceLayer.Common.pdb" target="lib\net5.0" />
+    <file src="..\Payroll.Employees.Domain\bin\Debug\net5.0\Payroll.Employees.Domain.dll" target="lib\net5.0" />
+    <file src="..\Payroll.Employees.Domain\bin\Debug\net5.0\Payroll.Employees.Domain.pdb" target="lib\net5.0" />
+    <file src="..\Payroll.Employees.Persistence\bin\Debug\net5.0\Payroll.Employees.Persistence.dll" target="lib\net5.0" />
+    <file src="..\Payroll.Employees.Persistence\bin\Debug\net5.0\Payroll.Employees.Persistence.pdb" target="lib\net5.0" />
+    <file src="..\Payroll.Employees.ServiceLayer\bin\Debug\net5.0\Payroll.Employees.ServiceLayer.EfCore.dll" target="lib\net5.0" />
+    <file src="..\Payroll.Employees.ServiceLayer\bin\Debug\net5.0\Payroll.Employees.ServiceLayer.EfCore.pdb" target="lib\net5.0" />
+    <file src="..\Payroll.Employees.ServiceLayer.HRMS\bin\Debug\net5.0\Payroll.Employees.ServiceLayer.HRMS.dll" target="lib\net5.0" />
+    <file src="..\Payroll.Employees.ServiceLayer.HRMS\bin\Debug\net5.0\Payroll.Employees.ServiceLayer.HRMS.pdb" target="lib\net5.0" />
+  </files>
+</package>
