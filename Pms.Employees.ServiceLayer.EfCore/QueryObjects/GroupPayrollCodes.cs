@@ -10,9 +10,10 @@ namespace Pms.Employees.ServiceLayer.EfCore.QueryObjects
     public static class GroupPayrollCodes
     {
         public static List<string> ExtractPayrollCodes(this IQueryable<Employee> employee) =>
-            employee.ToList()
+            employee.ToList().Where(ee => ee.PayrollCode != "")
             .GroupBy(e => e.PayrollCode)
             .Select(e => e.First())
+            .OrderBy(ee=>ee.PayrollCode)
             .Select(ee => ee.PayrollCode).ToList();
 
     }

@@ -10,16 +10,18 @@ namespace Pms.Employees.ServiceLayer.EfCore.QueryObjects
     public static class GroupBankCategories
     {
         public static List<string> ExtractBankCategories(this IQueryable<Employee> employees) =>
-            employees.ToList()
+            employees.ToList().Where(ee => ee.BankCategory != "")
                 .GroupBy(e => e.BankCategory)
                 .Select(e => e.First())
+                .OrderBy(ee=>ee.BankCategory)
                 .Select(ee => ee.BankCategory).ToList();
 
         public static List<string> ExtractBankCategories(this IQueryable<Employee> employees, string payrollCode) =>
-            employees.ToList()
+            employees.ToList().Where(ee => ee.BankCategory != "")
                 .Where(e => e.PayrollCode == payrollCode)
                 .GroupBy(e => e.BankCategory)
                 .Select(e => e.First())
+                .OrderBy(ee=>ee.BankCategory)
                 .Select(ee => ee.BankCategory).ToList();
 
 
