@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Pms.Employees.ServiceLayer.EfCore.QueryObjects
 {
-    public static class GroupBankCategories
+    public static class GroupExtensions
     {
         public static List<string> ExtractBankCategories(this IQueryable<Employee> employees) =>
             employees.ToList().Where(ee => ee.BankCategory != "")
@@ -25,5 +25,11 @@ namespace Pms.Employees.ServiceLayer.EfCore.QueryObjects
                 .Select(ee => ee.BankCategory).ToList();
 
 
+        public static List<string> ExtractPayrollCodes(this IQueryable<Employee> employee) =>
+            employee.ToList().Where(ee => ee.PayrollCode != "")
+                .GroupBy(e => e.PayrollCode)
+                .Select(e => e.First())
+                .OrderBy(ee => ee.PayrollCode)
+                .Select(ee => ee.PayrollCode).ToList();
     }
 }
