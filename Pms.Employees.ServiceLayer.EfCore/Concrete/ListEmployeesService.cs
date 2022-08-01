@@ -29,6 +29,13 @@ namespace Pms.Employees.ServiceLayer.Concrete
 
             return employees;
         }
+
+
+        public IEnumerable<string> ListEmployeePayrollCodes() =>
+            GetEmployees().ExtractPayrollCodes();
+
+        public IEnumerable<string> ListEmployeeBankCategory(string payrollCode) =>
+            GetEmployees().ExtractBankCategories(payrollCode);
     }
 }
 
