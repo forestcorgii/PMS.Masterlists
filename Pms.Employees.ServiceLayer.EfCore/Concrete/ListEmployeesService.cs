@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pms.Employees.Domain;
 using Pms.Employees.Persistence;
+using Pms.Employees.ServiceLayer.EfCore;
 using Pms.Employees.ServiceLayer.EfCore.QueryObjects;
 using System;
 using System.Collections.Generic;
@@ -10,14 +11,17 @@ using System.Threading.Tasks;
 
 namespace Pms.Employees.ServiceLayer.Concrete
 {
-   public class ListEmployeesService
+    public class ListEmployeesService : IEmployeeProvider
     {
-        private EmployeeDbContext Context;
-        public ListEmployeesService(EmployeeDbContext context) =>
-            Context = context;
+        private EmployeeDbContextFactory _factory;
+        public ListEmployeesService(EmployeeDbContextFactory factory) =>
+            _factory = factory;
 
-        public IQueryable<Employee> GetEmployees() => 
-            Context.Employees.AsNoTracking();
+        public IQueryable<Employee> GetEmployees()
+        {
+            EmployeeDbContext Context = _factory.CreateDbContext();
+            return Context.Employees.AsNoTracking();
+        }
 
         public IQueryable<Employee> FilterEmployees(string searchString, string payrollCode)
         {
