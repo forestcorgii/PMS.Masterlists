@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Pms.Employees.ServiceLayer.HRMS.Service
 {
-    public class FindEmployeeService
+    public class FindEmployeeService :IEmployeeFinder
     {
         private readonly HRMSAdapter? HRMSAdapter;
         public FindEmployeeService(HRMSAdapter hrmsAdapter)
