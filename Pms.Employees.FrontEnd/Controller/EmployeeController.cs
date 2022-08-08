@@ -18,7 +18,7 @@ namespace Pms.Employees.FrontEnd.Test.Controller
 
         public EmployeeController()
         {
-            Context = new EmployeeDbContext();
+            //Context = new EmployeeDbContext();
             Adapter = HRMSAdapterFactory.CreateAdapter(Shared.Configuration);
         }
 
