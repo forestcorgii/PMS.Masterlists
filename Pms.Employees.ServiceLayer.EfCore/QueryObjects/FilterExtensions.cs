@@ -12,14 +12,12 @@ namespace Pms.Employees.ServiceLayer.EfCore.QueryObjects
         public static IQueryable<Employee> FilterBySearchString(this IQueryable<Employee> employees, string filter) =>
             employees.Where(ee => 
                 filter =="" ||
-                (
-                    ee.EEId.Contains(filter) ||
-                    ee.FirstName.Contains(filter) ||
-                    ee.LastName.Contains(filter) ||
-                    ee.MiddleName.Contains(filter) ||
-                    ee.Location.Contains(filter) ||
-                    ee.BankName.Contains(filter)
-                )
+                ee.EEId.Contains(filter) ||
+                ee.FirstName.Contains(filter) ||
+                ee.LastName.Contains(filter) ||
+                ee.MiddleName.Contains(filter) ||
+                ee.Location.Contains(filter) ||
+                ee.BankName.Contains(filter)
            );
 
         public static IQueryable<Employee> FilterByPayrollCode(this IQueryable<Employee> employees, string payrollCode) =>
