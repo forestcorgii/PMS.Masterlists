@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Pms.Employees.ServiceLayer.EfCore
 {
-    public interface IEmployeeProvider
+    public interface IProvideEmployeeService
     {
         IQueryable<Employee> GetEmployees();
 

@@ -9,20 +9,12 @@ using System.Threading.Tasks;
 
 namespace Pms.Employees.ServiceLayer.Concrete
 {
-    public class SaveEmployeeService : IEmployeeSaving
+    public class ManageEmployeeService : IManageEmployeeService
     {
         private EmployeeDbContextFactory _factory;
-        public SaveEmployeeService(EmployeeDbContextFactory factory) =>
+        public ManageEmployeeService(EmployeeDbContextFactory factory) =>
             _factory = factory;
 
-        public void CreateOrEdit(Employee employee)
-        {
-            EmployeeDbContext Context = _factory.CreateDbContext();
-            if (Context.Employees.Count(ee => ee.EEId == employee.EEId) > 0)
-                Context.Entry(employee).CurrentValues.SetValues(employee);
-            else
-                Context.Add(employee);
-        }
 
         public void CreateOrEditAndSave(Employee employee)
         {

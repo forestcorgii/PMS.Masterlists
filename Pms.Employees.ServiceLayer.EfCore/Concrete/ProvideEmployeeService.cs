@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace Pms.Employees.ServiceLayer.Concrete
 {
-    public class ListEmployeesService : IEmployeeProvider
+    public class ProvideEmployeeService : IProvideEmployeeService
     {
         private EmployeeDbContextFactory _factory;
-        public ListEmployeesService(EmployeeDbContextFactory factory) =>
+        public ProvideEmployeeService(EmployeeDbContextFactory factory) =>
             _factory = factory;
 
         public IQueryable<Employee> GetEmployees()
