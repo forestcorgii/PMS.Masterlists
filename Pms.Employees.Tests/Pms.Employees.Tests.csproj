@@ -21,10 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pms.Employees.Persistence\Pms.Employees.Persistence.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ServiceLayer.EfCore\" />
+    <ProjectReference Include="..\Pms.Employees.ServiceLayer.EfCore\Pms.Employees.ServiceLayer.EfCore.csproj" />
   </ItemGroup>
 
 </Project>
