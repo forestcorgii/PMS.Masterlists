@@ -3,14 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32602.291
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Domain", "0 - Domain", "{379D746B-07D0-4565-9BD1-B06170F51320}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Persistence", "1 - Persistence", "{0E796B7F-1482-4DCC-A638-2E0F577A72B4}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Service Layer", "4 - Service Layer", "{36914632-E057-4E1D-B6FF-B3868742A991}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pms.Employees", "Pms.Employees\Pms.Employees.csproj", "{2E55483C-BB9F-4E98-843A-EE5FACD9EA38}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pms.Employees.ServiceLayer.HRMS", "Pms.Employees.ServiceLayer.HRMS\Pms.Employees.ServiceLayer.HRMS.csproj", "{951B3391-B32A-42D2-982B-73ED6E3833CA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pms.Employees.Domain", "Pms.Employees.Domain\Pms.Employees.Domain.csproj", "{EBCD0826-4583-4286-AD02-67EA95F1C650}"
@@ -19,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pms.Employees.Persistence",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pms.Employees.ServiceLayer.EfCore", "Pms.Employees.ServiceLayer.EfCore\Pms.Employees.ServiceLayer.EfCore.csproj", "{12F89CD1-2DCC-4DB1-82D0-28D33AA9DA2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pms.Employees.Tests", "Pms.Employees.Tests\Pms.Employees.Tests.csproj", "{F2D39885-0569-4387-AFD8-334CA30D4758}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pms.Employees.Tests", "Pms.Employees.Tests\Pms.Employees.Tests.csproj", "{F2D39885-0569-4387-AFD8-334CA30D4758}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pms.Employees.ServiceLayer.Files", "Pms.Employees.ServiceLayer.Files\Pms.Employees.ServiceLayer.Files.csproj", "{107D9C15-D815-4624-B3F8-43C3488C5660}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2E55483C-BB9F-4E98-843A-EE5FACD9EA38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E55483C-BB9F-4E98-843A-EE5FACD9EA38}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2E55483C-BB9F-4E98-843A-EE5FACD9EA38}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2E55483C-BB9F-4E98-843A-EE5FACD9EA38}.Release|Any CPU.Build.0 = Release|Any CPU
 		{951B3391-B32A-42D2-982B-73ED6E3833CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{951B3391-B32A-42D2-982B-73ED6E3833CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{951B3391-B32A-42D2-982B-73ED6E3833CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,15 +41,13 @@ Global
 		{F2D39885-0569-4387-AFD8-334CA30D4758}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2D39885-0569-4387-AFD8-334CA30D4758}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2D39885-0569-4387-AFD8-334CA30D4758}.Release|Any CPU.Build.0 = Release|Any CPU
+		{107D9C15-D815-4624-B3F8-43C3488C5660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{107D9C15-D815-4624-B3F8-43C3488C5660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{107D9C15-D815-4624-B3F8-43C3488C5660}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{107D9C15-D815-4624-B3F8-43C3488C5660}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{951B3391-B32A-42D2-982B-73ED6E3833CA} = {36914632-E057-4E1D-B6FF-B3868742A991}
-		{EBCD0826-4583-4286-AD02-67EA95F1C650} = {379D746B-07D0-4565-9BD1-B06170F51320}
-		{CFF5F19B-DA80-4E87-A3E0-54444FA8E410} = {0E796B7F-1482-4DCC-A638-2E0F577A72B4}
-		{12F89CD1-2DCC-4DB1-82D0-28D33AA9DA2F} = {36914632-E057-4E1D-B6FF-B3868742A991}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {637FD0A2-31B8-49F0-9C11-1706987F30F7}

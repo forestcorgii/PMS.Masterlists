@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pms.Employees.Domain;
+using Pms.Employees.Domain.Services;
 using Pms.Employees.Persistence;
 using Pms.Employees.ServiceLayer.EfCore;
 using Pms.Employees.ServiceLayer.EfCore.QueryObjects;
@@ -9,12 +10,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pms.Employees.ServiceLayer.Concrete
+namespace Pms.Employees.ServiceLayer
 {
-    public class ProvideEmployeeService : IProvideEmployeeService
+    public class EmployeeProvider : IProvideEmployeeService
     {
-        private EmployeeDbContextFactory _factory;
-        public ProvideEmployeeService(EmployeeDbContextFactory factory) =>
+        private IDbContextFactory<EmployeeDbContext> _factory;
+        public EmployeeProvider(IDbContextFactory<EmployeeDbContext> factory) =>
             _factory = factory;
 
         public IQueryable<Employee> GetEmployees()
@@ -40,6 +41,12 @@ namespace Pms.Employees.ServiceLayer.Concrete
 
         public IEnumerable<string> ListEmployeeBankCategory(string payrollCode) =>
             GetEmployees().ExtractBankCategories(payrollCode);
+
+        public bool EmployeeExists(string eeId)
+        {
+            EmployeeDbContext Context = _factory.CreateDbContext();
+            return Context.Employees.Any(ee => ee.EEId == eeId);
+        }
     }
 }
 

@@ -11,8 +11,6 @@ namespace Pms.Employees.Tests
 {
     public class EmployeeDbContextFactoryFixture : IDbContextFactory<EmployeeDbContext>
     {
-        private const string ConnectionString = "server=localhost;database=payroll3Test_efdb;user=root;password=Soft1234;";
-
         private static readonly object _lock = new();
         private static bool _databaseInitialized;
 
@@ -47,7 +45,7 @@ namespace Pms.Employees.Tests
 
         public EmployeeDbContextFactory Factory;
         public void CreateFactory()
-            => Factory = new EmployeeDbContextFactory(ConnectionString);
+            => Factory = new EmployeeDbContextFactory();
 
         public EmployeeDbContext CreateDbContext()
             => Factory.CreateDbContext();

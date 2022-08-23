@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pms.Employees.ServiceLayer.HRMS
+namespace Pms.Employees.Domain.Services
 {
     public interface IEmployeeFinder
     {

@@ -22,6 +22,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Pms.Employees.Persistence\Pms.Employees.Persistence.csproj" />
     <ProjectReference Include="..\Pms.Employees.ServiceLayer.EfCore\Pms.Employees.ServiceLayer.EfCore.csproj" />
+    <ProjectReference Include="..\Pms.Employees.ServiceLayer.Files\Pms.Employees.ServiceLayer.Files.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Domain\" />
+    <Folder Include="ServiceLayer.HRMS\" />
   </ItemGroup>
 
 </Project>

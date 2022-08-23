@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Pms.Employees.Domain;
+using Pms.Employees.Domain.Services;
 using Pms.Employees.ServiceLayer.HRMS.Adapter;
 using System;
 using System.Collections.Generic;

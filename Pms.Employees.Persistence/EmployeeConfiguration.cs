@@ -27,7 +27,7 @@ namespace Pms.Employees.Persistence
             builder.Property(cc => cc.PhilHealth).HasColumnType("VARCHAR(20)");
             builder.Property(cc => cc.SSS).HasColumnType("VARCHAR(20)");
             builder.Property(cc => cc.TIN).HasColumnType("VARCHAR(20)");
-             builder.Property(cc => cc.DateModified).HasColumnType("DATETIME");
+            builder.Property(cc => cc.DateModified).HasColumnType("DATETIME");
         }
     }
 }

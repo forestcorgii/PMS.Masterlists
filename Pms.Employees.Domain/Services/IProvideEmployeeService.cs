@@ -5,10 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pms.Employees.ServiceLayer.EfCore
+namespace Pms.Employees.Domain.Services
 {
     public interface IProvideEmployeeService
     {
+        bool EmployeeExists(string eeId);
+
         IQueryable<Employee> GetEmployees();
 
         IQueryable<Employee> FilterEmployees(string searchString, string payrollCode);

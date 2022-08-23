@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pms.Employees.ServiceLayer.EfCore
+namespace Pms.Employees.Domain.Services
 {
     public interface IManageEmployeeService
     {
-        void CreateOrEditAndSave(Employee employee);
+        void Save(IGeneralInformation employee);
+        void Save(IBankInformation employee);
     }
 }
