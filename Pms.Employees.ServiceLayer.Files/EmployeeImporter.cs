@@ -8,9 +8,9 @@ using System.IO;
 
 namespace Pms.Employees.ServiceLayer.Files
 {
-    public class ImportEmployeeService : IImportEmployeeService
+    public class EmployeeImporter : IImportEmployeeService
     {
-        public IEnumerable<IBankInformation> StartImport(string fileName, string bankName)
+        public IEnumerable<IBankInformation> StartImport(string fileName)
         {
             IWorkbook nWorkbook;
             using (var nTemplateFile = new FileStream(fileName, FileMode.Open, FileAccess.ReadWrite))
@@ -23,19 +23,30 @@ namespace Pms.Employees.ServiceLayer.Files
             while (i <= nSheet.LastRowNum)
             {
                 IRow row = nSheet.GetRow(i);
-                if (row is null || row.GetCell(0) is null) break; ;
-                
+                if (ValidateRow(row) == false) break;
+
                 IBankInformation bankInfo = new Employee();
                 bankInfo.EEId = row.GetCell(0).GetValue(formulator);
                 bankInfo.CardNumber = row.GetCell(6).GetValue(formulator);
                 bankInfo.AccountNumber = row.GetCell(7).GetValue(formulator);
-                bankInfo.BankName = bankName;
-                
+                bankInfo.BankName = row.GetCell(8).GetValue(formulator);
+
                 employeeBankInformations.Add(bankInfo);
                 i++;
             }
 
             return employeeBankInformations;
+        }
+        private bool ValidateRow(IRow row)
+        {
+            if (row is null) return false;
+
+            ICell cell = row.GetCell(0);
+            if (cell is null) return false;
+            if (cell.StringCellValue == string.Empty) return false;
+            if (cell.StringCellValue.Trim().Length != 4) return false;
+
+            return true;
         }
     }
 }

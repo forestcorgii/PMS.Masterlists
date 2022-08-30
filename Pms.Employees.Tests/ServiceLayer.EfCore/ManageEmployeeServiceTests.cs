@@ -46,13 +46,13 @@ namespace Pms.Employees.Tests.ServiceLayer.EfCore
             context.SaveChanges();
 
             Assert.NotNull(actualEmployee);
-            Assert.False(actualEmployee.PayrollCode == expectedEmployee.PayrollCode);
+            Assert.False(actualEmployee.Location == expectedEmployee.Location);
         }
 
         [Fact]
         public void GeneralInformationShouldNotUpdateBankInformation()
         {
-            IGeneralInformation bankInfo = expectedEmployee;
+            IPersonalInformation bankInfo = expectedEmployee;
 
             _service.Save(bankInfo);
 

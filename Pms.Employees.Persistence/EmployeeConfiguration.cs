@@ -17,12 +17,12 @@ namespace Pms.Employees.Persistence
             builder.Property(cc => cc.MiddleName).HasColumnType("VARCHAR(45)");
             builder.Property(cc => cc.BirthDate).HasColumnType("DATE");
             builder.Property(cc => cc.Location).HasColumnType("VARCHAR(45)");
-            builder.Property(cc => cc.Site).HasColumnType("VARCHAR(15)");
-            builder.Property(cc => cc.CardNumber).HasColumnType("VARCHAR(20)");
-            builder.Property(cc => cc.AccountNumber).HasColumnType("VARCHAR(20)");
+            builder.Property(cc => cc.Site).HasColumnType("VARCHAR(25)");
+            builder.Property(cc => cc.CardNumber).HasColumnType("VARCHAR(30)");
+            builder.Property(cc => cc.AccountNumber).HasColumnType("VARCHAR(30)");
             builder.Property(cc => cc.PayrollCode).HasColumnType("VARCHAR(6)");
             builder.Property(cc => cc.BankCategory).HasColumnType("VARCHAR(10)");
-            builder.Property(cc => cc.BankName).HasColumnType("VARCHAR(10)");
+            builder.Property(cc => cc.BankName).HasColumnType("VARCHAR(30)");
             builder.Property(cc => cc.Pagibig).HasColumnType("VARCHAR(20)");
             builder.Property(cc => cc.PhilHealth).HasColumnType("VARCHAR(20)");
             builder.Property(cc => cc.SSS).HasColumnType("VARCHAR(20)");

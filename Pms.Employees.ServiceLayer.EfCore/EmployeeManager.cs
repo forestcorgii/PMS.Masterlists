@@ -21,32 +21,34 @@ namespace Pms.Employees.ServiceLayer
 
         private void Validate(string eeId)
         {
-            if (eeId == "")
+            if (eeId is  null || eeId == "")
                 throw new EmptyEEIdException(eeId);
         }
 
-        public void Save(IGeneralInformation generalInfo)
+        public void Save(IPersonalInformation generalInfo)
         {
             Validate(generalInfo.EEId);
 
-            Employee employee = new()
-            {
-                EEId = generalInfo.EEId,
-                FirstName = generalInfo.FirstName,
-                LastName = generalInfo.LastName,
-                MiddleName = generalInfo.MiddleName,
-                BirthDate = generalInfo.BirthDate,
+            EmployeeDbContext Context = _factory.CreateDbContext();
+            Employee employee = Context.Employees.Where(ee => ee.EEId == generalInfo.EEId).FirstOrDefault();
+            if (employee is null)
+                employee = new() { EEId = generalInfo.EEId };
 
-                PayrollCode = generalInfo.PayrollCode,
-                BankCategory = generalInfo.BankCategory,
-                Location = generalInfo.Location,
-                Site = generalInfo.Site,
-                
-                Pagibig = generalInfo.Pagibig,
-                PhilHealth = generalInfo.PhilHealth,
-                SSS = generalInfo.SSS,
-                TIN = generalInfo.TIN,
-            };
+            employee.EEId = generalInfo.EEId;
+            employee.FirstName = generalInfo.FirstName;
+            employee.LastName = generalInfo.LastName;
+            employee.MiddleName = generalInfo.MiddleName;
+            employee.BirthDate = generalInfo.BirthDate;
+
+            employee.PayrollCode = generalInfo.PayrollCode;
+            employee.BankCategory = generalInfo.BankCategory;
+            employee.Location = generalInfo.Location;
+            employee.Site = generalInfo.Site;
+
+            employee.Pagibig = generalInfo.Pagibig;
+            employee.PhilHealth = generalInfo.PhilHealth;
+            employee.SSS = generalInfo.SSS;
+            employee.TIN = generalInfo.TIN;
 
             AddOrUpdate(employee);
         }
@@ -55,13 +57,31 @@ namespace Pms.Employees.ServiceLayer
         {
             Validate(bankInfo.EEId);
 
-            Employee employee = new()
-            {
-                EEId = bankInfo.EEId,
-                AccountNumber = bankInfo.AccountNumber,
-                CardNumber = bankInfo.CardNumber,
-                BankName = bankInfo.BankName,
-            };
+            EmployeeDbContext Context = _factory.CreateDbContext();
+            Employee employee = Context.Employees.Where(ee => ee.EEId == bankInfo.EEId).FirstOrDefault();
+            if (employee is null)
+                employee = new() { EEId = bankInfo.EEId };
+
+            employee.AccountNumber = bankInfo.AccountNumber;
+            employee.CardNumber = bankInfo.CardNumber;
+            employee.BankName = bankInfo.BankName;
+
+            AddOrUpdate(employee);
+        }
+
+        public void Save(IGovernmentInformation governmentInfo)
+        {
+            Validate(governmentInfo.EEId);
+
+            EmployeeDbContext Context = _factory.CreateDbContext();
+            Employee employee = Context.Employees.Where(ee => ee.EEId == governmentInfo.EEId).FirstOrDefault();
+            if (employee is null)
+                employee = new() { EEId = governmentInfo.EEId };
+
+            employee.Pagibig = governmentInfo.Pagibig;
+            employee.PhilHealth = governmentInfo.PhilHealth;
+            employee.SSS = governmentInfo.SSS;
+            employee.TIN = governmentInfo.TIN;
 
             AddOrUpdate(employee);
         }

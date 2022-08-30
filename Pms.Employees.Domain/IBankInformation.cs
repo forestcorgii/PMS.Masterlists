@@ -12,5 +12,6 @@ namespace Pms.Employees.Domain
         string BankName { get; set; }
         string CardNumber { get; set; }
         string AccountNumber { get; set; }
+        string PayrollCode { get; set; }
     }
 }

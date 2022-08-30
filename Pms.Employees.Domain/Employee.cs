@@ -1,23 +1,20 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System; 
 
 namespace Pms.Employees.Domain
 {
-    public class Employee : IGeneralInformation, IBankInformation
+    public class Employee : IPersonalInformation, IBankInformation,IGovernmentInformation
     {
         [JsonProperty("idNo")]
-        public string EEId { get; set; } = String.Empty;
+        public string EEId { get; set; } 
 
 
         [JsonProperty("first_name")]
-        public string FirstName { get; set; } = String.Empty;
+        public string FirstName { get; set; }
         [JsonProperty("last_name")]
-        public string LastName { get; set; } = String.Empty;
+        public string LastName { get; set; } 
         [JsonProperty("middle_name")]
-        public string MiddleName { get; set; } = String.Empty;
+        public string MiddleName { get; set; }
         public string Fullname
         {
             get
@@ -30,28 +27,28 @@ namespace Pms.Employees.Domain
         }
 
         [JsonProperty("department")]
-        public string Location { get; set; } = String.Empty;
+        public string Location { get; set; } 
 
         [JsonProperty("job_location")]
-        public string Site { get; set; } = String.Empty;
+        public string Site { get; set; }
 
         [JsonProperty("payroll_code")]
-        public string PayrollCode { get; set; } = String.Empty;
+        public string PayrollCode { get; set; }
 
         [JsonProperty("bank_category")]
-        public string BankCategory { get; set; } = String.Empty;
+        public string BankCategory { get; set; }
 
         [JsonProperty("pagibig")]
-        public string Pagibig { get; set; } = String.Empty;
+        public string Pagibig { get; set; }
 
         [JsonProperty("philhealth")]
-        public string PhilHealth { get; set; } = String.Empty;
+        public string PhilHealth { get; set; } 
 
         [JsonProperty("sss")]
-        public string SSS { get; set; } = String.Empty;
+        public string SSS { get; set; } 
 
         [JsonProperty("tin")]
-        public string TIN { get; set; } = String.Empty;
+        public string TIN { get; set; } 
 
 
         public DateTime BirthDate { get; set; }
@@ -70,18 +67,18 @@ namespace Pms.Employees.Domain
 
         public bool Active { get; set; } = true;
 
-        public DateTime DateModified { get; set; } = DateTime.Now;
-        public DateTime DateCreated { get; set; } = DateTime.Now;
+        public DateTime DateModified { get; set; }
+        public DateTime DateCreated { get; set; }
 
 
 
         [JsonProperty("bank_name")]
-        public string BankName { get; set; } = String.Empty;
+        public string BankName { get; set; } 
 
         [JsonProperty("card_number")]
-        public string CardNumber { get; set; } = String.Empty;
+        public string CardNumber { get; set; }
 
         [JsonProperty("account_number")]
-        public string AccountNumber { get; set; } = String.Empty;
+        public string AccountNumber { get; set; }
     }
 }

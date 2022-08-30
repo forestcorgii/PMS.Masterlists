@@ -30,4 +30,13 @@
     <Folder Include="ServiceLayer.HRMS\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TESTDATA\ACCUDATA_08302022.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TESTDATA\template_IMPORT_NEW ATM-UPLOAD-NEW TEMPLATE_20220830-P1A-REVISED.1-SEAN.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

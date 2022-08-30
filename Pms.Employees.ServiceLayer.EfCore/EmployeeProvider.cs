@@ -3,7 +3,6 @@ using Pms.Employees.Domain;
 using Pms.Employees.Domain.Services;
 using Pms.Employees.Persistence;
 using Pms.Employees.ServiceLayer.EfCore;
-using Pms.Employees.ServiceLayer.EfCore.QueryObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;

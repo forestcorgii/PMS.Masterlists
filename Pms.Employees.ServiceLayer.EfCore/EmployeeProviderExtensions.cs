@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pms.Employees.ServiceLayer.EfCore.QueryObjects
+namespace Pms.Employees.ServiceLayer.EfCore
 {
-    public static class GroupExtensions
+    public static class EmployeeProviderExtensions
     {
         public static List<string> ExtractBankCategories(this IQueryable<Employee> employees) =>
             employees.ToList().Where(ee => ee.BankCategory != "")
@@ -31,5 +31,20 @@ namespace Pms.Employees.ServiceLayer.EfCore.QueryObjects
                 .Select(e => e.First())
                 .OrderBy(ee => ee.PayrollCode)
                 .Select(ee => ee.PayrollCode).ToList();
+
+
+        public static IQueryable<Employee> FilterBySearchString(this IQueryable<Employee> employees, string filter) =>
+         employees.Where(ee =>
+             filter == "" ||
+             ee.EEId.Contains(filter) ||
+             ee.FirstName.Contains(filter) ||
+             ee.LastName.Contains(filter) ||
+             ee.MiddleName.Contains(filter) ||
+             ee.Location.Contains(filter) ||
+             ee.BankName.Contains(filter)
+        );
+
+        public static IQueryable<Employee> FilterByPayrollCode(this IQueryable<Employee> employees, string payrollCode) =>
+            employees.Where(ee => ee.PayrollCode == payrollCode);
     }
 }

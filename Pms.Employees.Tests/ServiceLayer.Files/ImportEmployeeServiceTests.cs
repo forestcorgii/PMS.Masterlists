@@ -10,20 +10,32 @@ using Pms.Employees.Domain.Services;
 using Pms.Employees.Tests;
 using Pms.Employees.Domain;
 using Pms.Employees.ServiceLayer.Files;
+using Pms.Employees.ServiceLayer;
 
 namespace Pms.Employees.Files.Tests
 {
     public class ImportEmployeeServiceTests
     {
+        private IDbContextFactory<EmployeeDbContext> _factory;
+        private IManageEmployeeService _service;
+
+        public ImportEmployeeServiceTests()
+        {
+            _factory = new EmployeeDbContextFactoryFixture();
+            _service = new EmployeeManager(_factory);
+
+        }
         [Fact()]
         public void ShouldImportSuccessfully_ReturnsIBankInformations()
         {
-            ImportEmployeeService importer = new();
+            EmployeeImporter importer = new();
 
-            string filename = $@"{AppDomain.CurrentDomain.BaseDirectory}\TESTDATA\TEMPLATE UPLOAD NEW EE-ATM_20220830-updated.xls";
-           IEnumerable<IBankInformation> actualBankInformations =  importer.StartImport(filename, "CHB");
+            string filename = $@"{AppDomain.CurrentDomain.BaseDirectory}\TESTDATA\ACCUDATA_08302022.xls";
+           IEnumerable<IBankInformation> actualBankInformations =  importer.StartImport(filename);
+            
+            _service.Save(actualBankInformations.First());
 
-            Assert.NotNull(actualBankInformations);
+                Assert.NotNull(actualBankInformations);
             Assert.NotEmpty(actualBankInformations);
         }
     }

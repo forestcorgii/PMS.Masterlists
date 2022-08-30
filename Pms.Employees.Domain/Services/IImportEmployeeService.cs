@@ -8,7 +8,7 @@ namespace Pms.Employees.Domain.Services
 {
     public interface IImportEmployeeService
     {
-        IEnumerable<IBankInformation> StartImport(string fileName,string bankName);
+        IEnumerable<IBankInformation> StartImport(string fileName);
 
     }
 }

@@ -9,7 +9,7 @@ namespace Pms.Employees.Domain.Services
 {
     public interface IManageEmployeeService
     {
-        void Save(IGeneralInformation employee);
+        void Save(IPersonalInformation employee);
         void Save(IBankInformation employee);
     }
 }
