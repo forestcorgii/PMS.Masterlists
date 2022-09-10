@@ -35,9 +35,9 @@ namespace Pms.Employees.ServiceLayer
                 employee = new() { EEId = generalInfo.EEId };
 
             employee.EEId = generalInfo.EEId;
-            employee.FirstName = generalInfo.FirstName;
-            employee.LastName = generalInfo.LastName;
-            employee.MiddleName = generalInfo.MiddleName;
+            employee.FirstName = generalInfo.FirstName.Trim();
+            employee.LastName = generalInfo.LastName.Trim();
+            employee.MiddleName = generalInfo.MiddleName.Trim();
             employee.BirthDate = generalInfo.BirthDate;
 
             employee.PayrollCode = generalInfo.PayrollCode;
@@ -61,6 +61,7 @@ namespace Pms.Employees.ServiceLayer
             Validate(bankInfo.EEId);
 
             EmployeeDbContext Context = _factory.CreateDbContext();
+
             Employee employee = Context.Employees.Where(ee => ee.EEId == bankInfo.EEId).FirstOrDefault();
             if (employee is null)
                 employee = new() { EEId = bankInfo.EEId };
@@ -69,8 +70,26 @@ namespace Pms.Employees.ServiceLayer
             employee.CardNumber = bankInfo.CardNumber;
             employee.Bank = bankInfo.Bank;
             employee.PayrollCode = bankInfo.PayrollCode;
-            
+
             employee.ValidateBankInformation();
+
+            Employee hasDuplicateAccountNumber = null;
+            Employee hasDuplicateCardNumber = null;
+            if (employee.Bank == Enums.BankChoices.LBP)
+            {
+                hasDuplicateAccountNumber = Context.Employees.Where(ee => ee.EEId != bankInfo.EEId && ee.AccountNumber == bankInfo.AccountNumber).FirstOrDefault();
+                hasDuplicateCardNumber = Context.Employees.Where(ee => ee.EEId != bankInfo.EEId && ee.CardNumber == bankInfo.CardNumber).FirstOrDefault();
+            }
+            else if (employee.Bank != Enums.BankChoices.CHK)
+                hasDuplicateAccountNumber = Context.Employees.Where(ee => ee.EEId != bankInfo.EEId && ee.AccountNumber == bankInfo.AccountNumber).FirstOrDefault();
+
+
+            if (hasDuplicateAccountNumber is not null)
+                throw new DuplicateBankInformationException(employee.EEId, hasDuplicateAccountNumber.EEId, "Account Number", hasDuplicateAccountNumber.AccountNumber);
+
+            if (hasDuplicateCardNumber is not null)
+                throw new DuplicateBankInformationException(employee.EEId, hasDuplicateCardNumber.EEId, "Card Number", hasDuplicateCardNumber.CardNumber);
+
 
             AddOrUpdate(employee);
         }
@@ -114,7 +133,7 @@ namespace Pms.Employees.ServiceLayer
             employee.PhilHealth = eeFileInfo.PhilHealth;
             employee.SSS = eeFileInfo.SSS;
             employee.TIN = eeFileInfo.TIN;
-            
+
             employee.ValidateGovernmentInformation();
             employee.ValidatePersonalInformation();
 

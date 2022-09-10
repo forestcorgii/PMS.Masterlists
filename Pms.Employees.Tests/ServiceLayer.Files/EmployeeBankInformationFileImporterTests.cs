@@ -14,12 +14,12 @@ using Pms.Employees.ServiceLayer;
 
 namespace Pms.Employees.Files.Tests
 {
-    public class ImportEmployeeServiceTests
+    public class EmployeeBankInformationFileImporterTests
     {
         private IDbContextFactory<EmployeeDbContext> _factory;
         private IManageEmployeeService _service;
 
-        public ImportEmployeeServiceTests()
+        public EmployeeBankInformationFileImporterTests()
         {
             _factory = new EmployeeDbContextFactoryFixture();
             _service = new EmployeeManager(_factory);

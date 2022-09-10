@@ -16,12 +16,15 @@ namespace Pms.Employees.Domain
 
 
         [JsonProperty("first_name")]
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+
         [JsonProperty("last_name")]
-        public string LastName { get; set; }
+        public string LastName { get; set; } = string.Empty;
+
         [JsonProperty("middle_name")]
-        public string MiddleName { get; set; }
-        public string NameExtension { get; set; }
+        public string MiddleName { get; set; } = string.Empty;
+        
+        public string NameExtension { get; set; } = string.Empty;
 
         public string Fullname
         {
@@ -80,45 +83,77 @@ namespace Pms.Employees.Domain
             {
                 if (FirstName.Length < 2) throw new InvalidEmployeeFieldValueException(nameof(FirstName), FirstName, EEId);
                 if (FirstName.Length > 45) throw new InvalidEmployeeFieldValueException(nameof(FirstName), FirstName, EEId);
-                //if (FirstName.Any(char.IsDigit)) throw new InvalidEmployeeFieldValueException(nameof(FirstName), FirstName, EEId);
-                //if (FirstName.Any(char.IsLower)) throw new InvalidEmployeeFieldValueException(nameof(FirstName), FirstName, EEId);
+                if (FirstName.Any(char.IsDigit)) throw new InvalidEmployeeFieldValueException(nameof(FirstName), FirstName, EEId);
+                if (FirstName.Any(char.IsLower)) throw new InvalidEmployeeFieldValueException(nameof(FirstName), FirstName, EEId);
             }
 
             if (LastName is not null && LastName != string.Empty)
             {
                 if (LastName.Length < 2) throw new InvalidEmployeeFieldValueException(nameof(LastName), LastName, EEId);
                 if (LastName.Length > 45) throw new InvalidEmployeeFieldValueException(nameof(LastName), LastName, EEId);
-                //if (LastName.Any(char.IsDigit)) throw new InvalidEmployeeFieldValueException(nameof(LastName), LastName, EEId);
-                //if (LastName.Any(char.IsLower)) throw new InvalidEmployeeFieldValueException(nameof(LastName), LastName, EEId);
+                if (LastName.Any(char.IsDigit)) throw new InvalidEmployeeFieldValueException(nameof(LastName), LastName, EEId);
+                if (LastName.Any(char.IsLower)) throw new InvalidEmployeeFieldValueException(nameof(LastName), LastName, EEId);
             }
 
             if (MiddleName is not null && MiddleName != string.Empty)
             {
                 if (MiddleName.Length > 45) throw new InvalidEmployeeFieldValueException(nameof(MiddleName), MiddleName, EEId);
-                //if (MiddleName.Any(char.IsDigit)) throw new InvalidEmployeeFieldValueException(nameof(MiddleName), MiddleName, EEId);
-                //if (MiddleName.Any(char.IsLower)) throw new InvalidEmployeeFieldValueException(nameof(MiddleName), MiddleName, EEId);
+                if (MiddleName.Any(char.IsDigit)) throw new InvalidEmployeeFieldValueException(nameof(MiddleName), MiddleName, EEId);
+                if (MiddleName.Any(char.IsLower)) throw new InvalidEmployeeFieldValueException(nameof(MiddleName), MiddleName, EEId);
 
             }
         }
         public void ValidateBankInformation()
         {
+            if (Bank != BankChoices.CHK && AccountNumber == string.Empty)
+                throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "Should not be blank.");
+            if (AccountNumber.Any(char.IsLetter))
+                throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId);
 
-            if (CardNumber is not null && CardNumber != string.Empty)
+            switch (Bank)
             {
-                if (CardNumber.Length > 25)
-                    throw new InvalidEmployeeFieldValueException(nameof(CardNumber), CardNumber, EEId);
-                if (CardNumber.Any(char.IsLetter))
-                    throw new InvalidEmployeeFieldValueException(nameof(CardNumber), CardNumber, EEId);
-            }
+                case BankChoices.LBP:
+                    if (CardNumber is not null && CardNumber != string.Empty)
+                    {
+                        if (CardNumber.Length != 16)
+                            throw new InvalidEmployeeFieldValueException(nameof(CardNumber), CardNumber, EEId);
+                        if (CardNumber.Any(char.IsLetter))
+                            throw new InvalidEmployeeFieldValueException(nameof(CardNumber), CardNumber, EEId);
+                    }
+                    else
+                        throw new InvalidEmployeeFieldValueException(nameof(CardNumber), CardNumber, EEId, "Should not be blank.");
 
-            if (AccountNumber is not null && AccountNumber != string.Empty)
-            {
-                if (AccountNumber.Length > 20)
-                    throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId);
-                if (AccountNumber.Any(char.IsLetter))
-                    throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId);
+                    if (AccountNumber.Length != 19)
+                        throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId);
+                    if (!AccountNumber.Contains("19372"))
+                        throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "LBP Account numbers contains '19372'.");
+                    break;
+                
+                case BankChoices.CBC:
+                case BankChoices.CBC1:
+                    if (AccountNumber.Length != 10)
+                        throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId);
+                    if (AccountNumber.Substring(0, 3) != "222")
+                        throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "CBC/CBC1 Account numbers have leading '222'.");
+                    break;
+                
+                case BankChoices.MTAC:
+                    if (AccountNumber.Length != 13)
+                        throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId);
+                    if (AccountNumber.Substring(0, 3) != "525")
+                        throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "MTAC Account numbers have leading '525'.");
+                    break;
+
+                case BankChoices.MPALO:
+                    if (AccountNumber.Length != 13)
+                        throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId);
+                    if (AccountNumber.Substring(0, 3) != "756")
+                        throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "MPALO Account numbers have leading '756'.");
+                    break;
             }
         }
+
+
         public void ValidateGovernmentInformation()
         {
             if (Pagibig is not null && Pagibig != string.Empty)
@@ -154,6 +189,7 @@ namespace Pms.Employees.Domain
             }
 
         }
+
         public void ValidateAll()
         {
             ValidatePersonalInformation();
@@ -187,15 +223,16 @@ namespace Pms.Employees.Domain
         public bool Active { get; set; } = true;
 
         public DateTime DateModified { get; set; }
+
         public DateTime DateCreated { get; set; }
 
 
 
         [JsonProperty("card_number")]
-        public string CardNumber { get; set; }
+        public string CardNumber { get; set; } = string.Empty;
 
         [JsonProperty("account_number")]
-        public string AccountNumber { get; set; }
+        public string AccountNumber { get; set; } = string.Empty;
 
         public BankChoices Bank { get; set; }
         [JsonProperty("bank_name")]

@@ -15,7 +15,7 @@ using static Pms.Employees.Tests.Seeder;
 
 namespace Pms.Employees.Tests.ServiceLayer.EfCore
 {
-    public class ManageEmployeeServiceTests
+    public class EmployeeManageTests
     {
         private IDbContextFactory<EmployeeDbContext> _factory;
         private IManageEmployeeService _service;
@@ -23,7 +23,7 @@ namespace Pms.Employees.Tests.ServiceLayer.EfCore
         private string eeId;
         private Employee expectedEmployee;
 
-        public ManageEmployeeServiceTests()
+        public EmployeeManageTests()
         {
             _factory = new EmployeeDbContextFactoryFixture();
             _service = new EmployeeManager(_factory);
@@ -33,7 +33,7 @@ namespace Pms.Employees.Tests.ServiceLayer.EfCore
         }
 
         [Fact]
-        public void BankInformationShouldNotUpdateGeneralInformation()
+        public void Bank_Informations_should_not_Update_General_Information()
         {
             try
             {
@@ -57,7 +57,7 @@ namespace Pms.Employees.Tests.ServiceLayer.EfCore
         }
 
         [Fact]
-        public void GeneralInformationShouldNotUpdateBankInformation()
+        public void General_Information_should_not_Update_Bank_Information()
         {
             try { 
             IPersonalInformation bankInfo = expectedEmployee;
@@ -81,7 +81,7 @@ namespace Pms.Employees.Tests.ServiceLayer.EfCore
 }
 
         [Fact]
-        public void ShouldThrowExceptionWhenAddingEmployee()
+        public void Should_Throw_Exception_When_Adding_Employee()
         {
             Assert.Throws<EmptyEEIdException>(() =>
             {
