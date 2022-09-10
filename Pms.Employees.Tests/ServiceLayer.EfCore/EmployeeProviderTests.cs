@@ -25,10 +25,16 @@ namespace Pms.Employees.Tests.ServiceLayer.EfCore
 
 
         [Fact]
+        public void FindEmployeeTest()
+        {
+            string expectedEEId = "DYYJ";
+            Employee actualEmployee = _service.FindEmployee(expectedEEId);
+            Assert.Equal(actualEmployee.EEId, expectedEEId);
+        }
+
+        [Fact]
         public void ShouldReturnEmployeesUsingGetEmployees()
         {
-
-
 
         }
     }

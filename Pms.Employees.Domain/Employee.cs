@@ -29,10 +29,10 @@ namespace Pms.Employees.Domain
             {
                 string lastname = LastName;
                 string firstname = FirstName != string.Empty ? $", {FirstName}" : "";
+                string middleInitial = MiddleName != string.Empty ? $" {MiddleName?[0]}" : "";
                 string nameExtension = NameExtension != string.Empty ? $" {NameExtension}" : "";
-                string middleInitial = MiddleName != string.Empty ? $" {MiddleName[0]}" : "";
-                string fullName = $"{lastname}{firstname}{nameExtension}{middleInitial}.";
-                
+                string fullName = $"{lastname}{firstname}{middleInitial}{nameExtension}.";
+
                 return fullName;
             }
         }
@@ -65,7 +65,9 @@ namespace Pms.Employees.Domain
         [JsonProperty("tin")]
         public string TIN { get; set; }
 
-        public void Validate()
+
+
+        public void ValidatePersonalInformation()
         {
             if (EEId is not null && EEId != string.Empty)
             {
@@ -78,27 +80,47 @@ namespace Pms.Employees.Domain
             {
                 if (FirstName.Length < 2) throw new InvalidEmployeeFieldValueException(nameof(FirstName), FirstName, EEId);
                 if (FirstName.Length > 45) throw new InvalidEmployeeFieldValueException(nameof(FirstName), FirstName, EEId);
-                if (FirstName.Any(char.IsDigit)) throw new InvalidEmployeeFieldValueException(nameof(FirstName), FirstName, EEId);
-                if (FirstName.Any(char.IsLower)) throw new InvalidEmployeeFieldValueException(nameof(FirstName), FirstName, EEId);
+                //if (FirstName.Any(char.IsDigit)) throw new InvalidEmployeeFieldValueException(nameof(FirstName), FirstName, EEId);
+                //if (FirstName.Any(char.IsLower)) throw new InvalidEmployeeFieldValueException(nameof(FirstName), FirstName, EEId);
             }
 
             if (LastName is not null && LastName != string.Empty)
             {
-
                 if (LastName.Length < 2) throw new InvalidEmployeeFieldValueException(nameof(LastName), LastName, EEId);
                 if (LastName.Length > 45) throw new InvalidEmployeeFieldValueException(nameof(LastName), LastName, EEId);
-                if (LastName.Any(char.IsDigit)) throw new InvalidEmployeeFieldValueException(nameof(LastName), LastName, EEId);
-                if (LastName.Any(char.IsLower)) throw new InvalidEmployeeFieldValueException(nameof(LastName), LastName, EEId);
+                //if (LastName.Any(char.IsDigit)) throw new InvalidEmployeeFieldValueException(nameof(LastName), LastName, EEId);
+                //if (LastName.Any(char.IsLower)) throw new InvalidEmployeeFieldValueException(nameof(LastName), LastName, EEId);
             }
 
             if (MiddleName is not null && MiddleName != string.Empty)
             {
                 if (MiddleName.Length > 45) throw new InvalidEmployeeFieldValueException(nameof(MiddleName), MiddleName, EEId);
-                if (MiddleName.Any(char.IsDigit)) throw new InvalidEmployeeFieldValueException(nameof(MiddleName), MiddleName, EEId);
-                if (MiddleName.Any(char.IsLower)) throw new InvalidEmployeeFieldValueException(nameof(MiddleName), MiddleName, EEId);
+                //if (MiddleName.Any(char.IsDigit)) throw new InvalidEmployeeFieldValueException(nameof(MiddleName), MiddleName, EEId);
+                //if (MiddleName.Any(char.IsLower)) throw new InvalidEmployeeFieldValueException(nameof(MiddleName), MiddleName, EEId);
 
             }
+        }
+        public void ValidateBankInformation()
+        {
 
+            if (CardNumber is not null && CardNumber != string.Empty)
+            {
+                if (CardNumber.Length > 25)
+                    throw new InvalidEmployeeFieldValueException(nameof(CardNumber), CardNumber, EEId);
+                if (CardNumber.Any(char.IsLetter))
+                    throw new InvalidEmployeeFieldValueException(nameof(CardNumber), CardNumber, EEId);
+            }
+
+            if (AccountNumber is not null && AccountNumber != string.Empty)
+            {
+                if (AccountNumber.Length > 20)
+                    throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId);
+                if (AccountNumber.Any(char.IsLetter))
+                    throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId);
+            }
+        }
+        public void ValidateGovernmentInformation()
+        {
             if (Pagibig is not null && Pagibig != string.Empty)
             {
                 if (!Regex.IsMatch(Pagibig, @"^(\d{4}-\d{4}-\d{4}|[0-9]{12})$"))
@@ -125,27 +147,18 @@ namespace Pms.Employees.Domain
 
             if (TIN is not null && TIN != string.Empty)
             {
-                if (!Regex.IsMatch(TIN, @"^(\d{3}-\d{2}-\d{4}|[0-9]{9}|[0-9]{9}0{1,4})$"))
+                if (!Regex.IsMatch(TIN, @"^(\d{3}-\d{2}-\d{4}|\d{3}-\d{3}-\d{3}|\d{3}-\d{3}-\d{3}-\d{3}|[0-9]{9}|[0-9]{9}0{1,4})$"))
                     throw new InvalidEmployeeFieldValueException(nameof(TIN), TIN, EEId);
                 if (TIN.Any(char.IsLetter)) throw new InvalidEmployeeFieldValueException(nameof(TIN), TIN, EEId);
 
             }
 
-            if (CardNumber is not null && CardNumber != string.Empty)
-            {
-                if (CardNumber.Length > 25)
-                    throw new InvalidEmployeeFieldValueException(nameof(CardNumber), CardNumber, EEId);
-                if (CardNumber.Any(char.IsLetter))
-                    throw new InvalidEmployeeFieldValueException(nameof(CardNumber), CardNumber, EEId);
-            }
-
-            if (AccountNumber is not null && AccountNumber != string.Empty)
-            {
-                if (AccountNumber.Length > 20)
-                    throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId);
-                if (AccountNumber.Any(char.IsLetter))
-                    throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId);
-            }
+        }
+        public void ValidateAll()
+        {
+            ValidatePersonalInformation();
+            ValidateBankInformation();
+            ValidateGovernmentInformation();
         }
 
 
@@ -193,7 +206,9 @@ namespace Pms.Employees.Domain
                 if (value == "LANDBANK" || value == "LBP")
                     Bank = BankChoices.LBP;
                 else if (value == "CHINABANK" || value == "CBC")
-                    Bank = BankChoices.LBP;
+                    Bank = BankChoices.CBC;
+                else if (value == "CBC1")
+                    Bank = BankChoices.CBC1;
                 else if (value == "MPALO")
                     Bank = BankChoices.MPALO;
                 else if (value == "MTAC")

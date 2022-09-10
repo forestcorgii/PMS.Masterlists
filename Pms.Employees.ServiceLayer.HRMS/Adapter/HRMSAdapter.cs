@@ -24,31 +24,36 @@ namespace Pms.Employees.ServiceLayer.HRMS.Adapter
 
         public async Task<T> GetEmployeeFromHRMS<T>(string eeId, string site)
         {
-            Parameter.BodyArgs["idno"] = eeId;
-            var content = new FormUrlEncodedContent(Parameter.BodyArgs);
-
-            var response = await Client.PostAsync(Parameter.Urls[site], content);
-
-            string responseString = await response.Content.ReadAsStringAsync();
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var jsonSettings = new JsonSerializerSettings();
-                jsonSettings.NullValueHandling = NullValueHandling.Ignore;
+                Parameter.BodyArgs["idno"] = eeId;
+                var content = new FormUrlEncodedContent(Parameter.BodyArgs);
 
-                HRMSResponse<T> employee = JsonConvert.DeserializeObject<HRMSResponse<T>>(responseString, jsonSettings);
-                if (employee is not null)
-                    return employee.message[0];
-            }
-            else
-            {
-                switch (response.StatusCode)
+                var response = await Client.PostAsync(Parameter.Urls[site], content);
+
+                string responseString = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
                 {
-                    case (System.Net.HttpStatusCode)400:
-                        throw new InvalidRequestException();
-                    case (System.Net.HttpStatusCode)404:
-                        throw new EmployeeNotFoundException(eeId);
+                    var jsonSettings = new JsonSerializerSettings();
+                    jsonSettings.NullValueHandling = NullValueHandling.Ignore;
+
+                    HRMSResponse<T> employee = JsonConvert.DeserializeObject<HRMSResponse<T>>(responseString, jsonSettings);
+                    if (employee is not null)
+                        return employee.message[0];
+                }
+                else
+                {
+                    switch (response.StatusCode)
+                    {
+                        case (System.Net.HttpStatusCode)400:
+                            throw new InvalidRequestException();
+                        case (System.Net.HttpStatusCode)404:
+                            throw new EmployeeNotFoundException(eeId);
+                    }
                 }
             }
+            catch (InvalidRequestException) { }
+            catch (EmployeeNotFoundException) { }
             return default;
         }
 

@@ -25,11 +25,12 @@ namespace Pms.Employees.ServiceLayer
 
         public IQueryable<Employee> FilterEmployees(string searchString, string payrollCode)
         {
-            IQueryable<Employee> employees;
-            if (searchString != "")
-                employees = GetEmployees().FilterByPayrollCode(payrollCode).FilterBySearchString(searchString);
-            else
-                employees = GetEmployees().FilterByPayrollCode(payrollCode);
+            IQueryable<Employee> employees = GetEmployees();
+            
+            if (payrollCode != "")
+                employees = employees.FilterByPayrollCode(payrollCode);
+            else if (searchString != "")
+                employees = employees.FilterBySearchString(searchString);
 
             return employees;
         }
@@ -45,6 +46,12 @@ namespace Pms.Employees.ServiceLayer
         {
             EmployeeDbContext Context = _factory.CreateDbContext();
             return Context.Employees.Any(ee => ee.EEId == eeId);
+        }
+
+        public Employee FindEmployee(string eeId)
+        {
+            EmployeeDbContext Context = _factory.CreateDbContext();
+            return Context.Employees.Find(eeId);
         }
     }
 }

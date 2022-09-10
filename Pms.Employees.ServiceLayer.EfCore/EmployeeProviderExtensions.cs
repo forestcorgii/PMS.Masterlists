@@ -40,8 +40,7 @@ namespace Pms.Employees.ServiceLayer.EfCore
              ee.FirstName.Contains(filter) ||
              ee.LastName.Contains(filter) ||
              ee.MiddleName.Contains(filter) ||
-             ee.Location.Contains(filter) ||
-             ee.BankName.Contains(filter)
+             ee.Location.Contains(filter)
         );
 
         public static IQueryable<Employee> FilterByPayrollCode(this IQueryable<Employee> employees, string payrollCode) =>

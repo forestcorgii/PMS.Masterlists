@@ -6,9 +6,16 @@ using System.Threading.Tasks;
 
 namespace Pms.Employees.Domain
 {
-    public interface IGovernmentInformation
+    public interface IEEFileInformation
     {
         string EEId { get; set; }
+        
+        string FirstName { get; set; }
+        string LastName { get; set; }
+        string MiddleName { get; set; }
+        string NameExtension { get; set; }
+        
+        string Gender { get; set; }
 
         string Pagibig { get; set; }
         string PhilHealth { get; set; }

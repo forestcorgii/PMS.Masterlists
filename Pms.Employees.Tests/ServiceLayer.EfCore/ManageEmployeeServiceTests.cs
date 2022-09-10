@@ -35,23 +35,31 @@ namespace Pms.Employees.Tests.ServiceLayer.EfCore
         [Fact]
         public void BankInformationShouldNotUpdateGeneralInformation()
         {
-            IBankInformation bankInfo = expectedEmployee;
+            try
+            {
+                IBankInformation bankInfo = expectedEmployee;
 
-            _service.Save(bankInfo);
+                _service.Save(bankInfo);
+                
+                using EmployeeDbContext context = _factory.CreateDbContext();
+                Employee actualEmployee = context.Employees.Where(ee => ee.EEId == eeId).FirstOrDefault();
 
-            using EmployeeDbContext context = _factory.CreateDbContext();
-            Employee actualEmployee = context.Employees.Where(ee => ee.EEId == eeId).FirstOrDefault();
+                context.Employees.Remove(actualEmployee);
+                context.SaveChanges();
 
-            context.Employees.Remove(actualEmployee);
-            context.SaveChanges();
-
-            Assert.NotNull(actualEmployee);
-            Assert.False(actualEmployee.Location == expectedEmployee.Location);
+                Assert.NotNull(actualEmployee);
+                Assert.False(actualEmployee.Location == expectedEmployee.Location);
+            }
+            catch (InvalidEmployeeFieldValueException ex)
+            {
+                Console.WriteLine(ex.Value);
+            }
         }
 
         [Fact]
         public void GeneralInformationShouldNotUpdateBankInformation()
         {
+            try { 
             IPersonalInformation bankInfo = expectedEmployee;
 
             _service.Save(bankInfo);
@@ -66,6 +74,11 @@ namespace Pms.Employees.Tests.ServiceLayer.EfCore
             Assert.NotNull(actualEmployee);
             Assert.False(actualEmployee.AccountNumber == expectedEmployee.AccountNumber);
         }
+            catch (InvalidEmployeeFieldValueException ex)
+            {
+                Console.WriteLine(ex.Value);
+            }
+}
 
         [Fact]
         public void ShouldThrowExceptionWhenAddingEmployee()

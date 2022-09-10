@@ -21,7 +21,7 @@ namespace Pms.Employees.ServiceLayer
 
         private void Validate(string eeId)
         {
-            if (eeId is  null || eeId == "")
+            if (eeId is null || eeId == "")
                 throw new EmptyEEIdException(eeId);
         }
 
@@ -49,6 +49,9 @@ namespace Pms.Employees.ServiceLayer
             employee.PhilHealth = generalInfo.PhilHealth;
             employee.SSS = generalInfo.SSS;
             employee.TIN = generalInfo.TIN;
+            employee.Active = generalInfo.Active;
+
+            employee.ValidatePersonalInformation();
 
             AddOrUpdate(employee);
         }
@@ -64,7 +67,10 @@ namespace Pms.Employees.ServiceLayer
 
             employee.AccountNumber = bankInfo.AccountNumber;
             employee.CardNumber = bankInfo.CardNumber;
-            employee.BankName = bankInfo.BankName;
+            employee.Bank = bankInfo.Bank;
+            employee.PayrollCode = bankInfo.PayrollCode;
+            
+            employee.ValidateBankInformation();
 
             AddOrUpdate(employee);
         }
@@ -83,8 +89,39 @@ namespace Pms.Employees.ServiceLayer
             employee.SSS = governmentInfo.SSS;
             employee.TIN = governmentInfo.TIN;
 
+            employee.ValidateGovernmentInformation();
+
             AddOrUpdate(employee);
         }
+
+        public void Save(IEEFileInformation eeFileInfo)
+        {
+            Validate(eeFileInfo.EEId);
+
+            EmployeeDbContext Context = _factory.CreateDbContext();
+            Employee employee = Context.Employees.Where(ee => ee.EEId == eeFileInfo.EEId).FirstOrDefault();
+            if (employee is null)
+                employee = new() { EEId = eeFileInfo.EEId };
+
+            employee.EEId = eeFileInfo.EEId;
+            employee.FirstName = eeFileInfo.FirstName;
+            employee.LastName = eeFileInfo.LastName;
+            employee.MiddleName = eeFileInfo.MiddleName;
+            employee.NameExtension = eeFileInfo.NameExtension;
+            employee.BirthDate = eeFileInfo.BirthDate;
+
+            employee.Pagibig = eeFileInfo.Pagibig;
+            employee.PhilHealth = eeFileInfo.PhilHealth;
+            employee.SSS = eeFileInfo.SSS;
+            employee.TIN = eeFileInfo.TIN;
+            
+            employee.ValidateGovernmentInformation();
+            employee.ValidatePersonalInformation();
+
+            AddOrUpdate(employee);
+        }
+
+
 
         private void AddOrUpdate(Employee employee)
         {

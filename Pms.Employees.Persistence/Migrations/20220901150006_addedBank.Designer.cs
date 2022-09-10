@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Pms.Employees.Persistence;
 
 namespace Pms.Employees.Persistence.Migrations
 {
     [DbContext(typeof(EmployeeDbContext))]
-    partial class EmployeeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220901150006_addedBank")]
+    partial class addedBank
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,9 +51,6 @@ namespace Pms.Employees.Persistence.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("VARCHAR(45)");
 
-                    b.Property<string>("Gender")
-                        .HasColumnType("VARCHAR(1)");
-
                     b.Property<string>("LastName")
                         .HasColumnType("VARCHAR(45)");
 
@@ -60,9 +59,6 @@ namespace Pms.Employees.Persistence.Migrations
 
                     b.Property<string>("MiddleName")
                         .HasColumnType("VARCHAR(45)");
-
-                    b.Property<string>("NameExtension")
-                        .HasColumnType("text");
 
                     b.Property<string>("Pagibig")
                         .HasColumnType("VARCHAR(20)");

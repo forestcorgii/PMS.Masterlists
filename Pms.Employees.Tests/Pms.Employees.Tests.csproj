@@ -26,15 +26,29 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\" />
     <Folder Include="ServiceLayer.HRMS\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TESTDATA\ACCUDATA_08302022.xls">
+    <None Update="TESTDATA\LBP BP6A.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TESTDATA\template_IMPORT_NEW ATM-UPLOAD-NEW TEMPLATE_20220830-P1A-REVISED.1-SEAN.xls">
+    <None Update="TESTDATA\CBC.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TESTDATA\CHK.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TESTDATA\EE DATA_as of 202208.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TESTDATA\MPALO.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TESTDATA\MTAC.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TESTDATA\LBP.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

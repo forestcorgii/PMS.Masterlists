@@ -13,7 +13,10 @@ namespace Pms.Employees.Domain
         string FirstName { get; set; }
         string LastName { get; set; }
         string MiddleName { get; set; }
+        string NameExtension { get; set; }
         
+        string Gender { get; set; }
+
         string Location { get; set; }
         string Site { get; set; }
         string PayrollCode { get; set; }
@@ -24,7 +27,7 @@ namespace Pms.Employees.Domain
         string SSS { get; set; }
         string TIN { get; set; }
         DateTime BirthDate { get; set; }
-        string BirthDateString { set; }
+        string BirthDateSetter { set; }
         bool Active { get; set; } 
     }
 }

@@ -10,6 +10,8 @@ namespace Pms.Employees.Domain.Services
     public interface IProvideEmployeeService
     {
         bool EmployeeExists(string eeId);
+        
+        Employee FindEmployee(string eeId);
 
         IQueryable<Employee> GetEmployees();
 

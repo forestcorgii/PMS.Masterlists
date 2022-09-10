@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Pms.Employees.ServiceLayer.Files
@@ -20,9 +21,10 @@ namespace Pms.Employees.ServiceLayer.Files
                     if (DateUtil.IsCellDateFormatted(cell))
                     {
                         DateTime date = cell.DateCellValue;
-                        ICellStyle style = cell.CellStyle;
-                        string format = style.GetDataFormatString().Replace('m', 'M');
-                        return date.ToString(format);
+                        //ICellStyle style = cell.CellStyle;
+                        //string format = Regex.Replace(style.GetDataFormatString(), @"[@;]", "").Replace('m', 'M');
+                        //return date.ToString(format);
+                        return date.ToString("yyyy-MM-dd");
                     }
                     else
                     {
@@ -34,7 +36,7 @@ namespace Pms.Employees.ServiceLayer.Files
                         return cell.NumericCellValue.ToString();
                     }
                 case CellType.Formula:
-                        return GetValue(formulator.EvaluateInCell(cell));
+                    return GetValue(formulator.EvaluateInCell(cell));
                 default:
                     return cell.StringCellValue;
             }

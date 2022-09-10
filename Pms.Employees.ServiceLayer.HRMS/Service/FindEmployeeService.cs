@@ -35,28 +35,39 @@ namespace Pms.Employees.ServiceLayer.HRMS.Service
             throw new Exception("HRMS Service is not set.");
         }
 
-
-
-        private static string ParsePayrollCode(string payroll_code)
+        private static string ParsePayrollCode(string payrollCode)
         {
-            string pCode = payroll_code.Split('-')[0].Replace("PAY", "P").Trim();
-            pCode = Regex.Match(pCode, "([BLKP]{1,2})([1-9]{1,2})(A?)").Value;
+            if (payrollCode is not null)
+            {
+                string pCode = payrollCode.Split('-')[0].Replace("PAY", "P").Trim();
+                pCode = Regex.Match(pCode, "([BLKP]{1,2}[0-9]{1,2}A?)").Value;
 
-            return pCode;
+                return pCode;
+            }
+            return "";
         }
 
         private static string ParseBankCategory(string payrollCode, string bankCategory)
         {
-            if (payrollCode.Contains("ATM2") || bankCategory.Contains("ATM2")) { return "ATM2"; }
-            if (payrollCode.Contains("ATM") || bankCategory.Contains("ATM")) { return "ATM1"; }
-            if (payrollCode.Contains("CHK") || payrollCode.Contains("NO BANK") || payrollCode.Contains("CHEQUE")) { return "CHK"; }
-            if (payrollCode.Contains("CASHCARD") || payrollCode.Contains("CCARD")) { return "CCARD"; }
+            if (payrollCode is not null)
+            {
+                if (payrollCode.Contains("ATM2") || bankCategory.Contains("ATM2")) { return "ATM2"; }
+                if (payrollCode.Contains("ATM") || bankCategory.Contains("ATM")) { return "ATM1"; }
+                if (payrollCode.Contains("CHK") || payrollCode.Contains("NO BANK") || payrollCode.Contains("CHEQUE")) { return "CHK"; }
+                if (payrollCode.Contains("CASHCARD") || payrollCode.Contains("CCARD")) { return "CCARD"; }
+            }
+            else payrollCode = "";
 
-            string bankCat = $"{payrollCode} {bankCategory}";
-            bankCat = Regex.Replace(bankCat, "(CASHCARD)", "CCARD");
-            bankCat = Regex.Replace(bankCat, "(CHECK|CHEQUE|NO BANK)", "CHK");
+            if (bankCategory is not null)
+            {
+                string bankCat = $"{payrollCode} {bankCategory}";
+                bankCat = Regex.Replace(bankCat, "(CASHCARD)", "CCARD");
+                bankCat = Regex.Replace(bankCat, "(CHECK|CHEQUE|NO BANK)", "CHK");
 
-            return Regex.Match(bankCat, "(CHK|ATM1|ATM2|CCARD)").Value;
+                return Regex.Match(bankCat, "(CHK|ATM1|ATM2|CCARD)").Value;
+            }
+            
+            return "CHK";
         }
     }
 }

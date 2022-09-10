@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Pms.Employees.ServiceLayer.Files
 {
-    public class EmployeeImporter : IImportEmployeeService
+    public class EmployeeBankInformationImporter : IImportEmployeeService
     {
         public IEnumerable<IBankInformation> StartImport(string fileName)
         {
@@ -26,10 +26,11 @@ namespace Pms.Employees.ServiceLayer.Files
                 if (ValidateRow(row) == false) break;
 
                 IBankInformation bankInfo = new Employee();
-                bankInfo.EEId = row.GetCell(0).GetValue(formulator);
-                bankInfo.CardNumber = row.GetCell(6).GetValue(formulator);
-                bankInfo.AccountNumber = row.GetCell(7).GetValue(formulator);
-                bankInfo.BankName = row.GetCell(8).GetValue(formulator);
+                bankInfo.EEId = row.GetCell(1).GetValue(formulator);
+                bankInfo.AccountNumber = row.GetCell(6).GetValue(formulator);
+                bankInfo.CardNumber = row.GetCell(7).GetValue(formulator);
+                bankInfo.BankSetter = row.GetCell(8).GetValue(formulator);
+                bankInfo.PayrollCode = row.GetCell(9).GetValue(formulator);
 
                 employeeBankInformations.Add(bankInfo);
                 i++;
@@ -41,10 +42,10 @@ namespace Pms.Employees.ServiceLayer.Files
         {
             if (row is null) return false;
 
-            ICell cell = row.GetCell(0);
+            ICell cell = row.GetCell(1);
             if (cell is null) return false;
-            if (cell.StringCellValue == string.Empty) return false;
-            if (cell.StringCellValue.Trim().Length != 4) return false;
+            if (cell.GetValue() == string.Empty) return false;
+            if (cell.GetValue().Trim().Length != 4) return false;
 
             return true;
         }
