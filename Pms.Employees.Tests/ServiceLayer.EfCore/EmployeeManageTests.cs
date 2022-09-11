@@ -35,31 +35,23 @@ namespace Pms.Employees.Tests.ServiceLayer.EfCore
         [Fact]
         public void Bank_Informations_should_not_Update_General_Information()
         {
-            try
-            {
-                IBankInformation bankInfo = expectedEmployee;
+            IBankInformation bankInfo = expectedEmployee;
 
-                _service.Save(bankInfo);
-                
-                using EmployeeDbContext context = _factory.CreateDbContext();
-                Employee actualEmployee = context.Employees.Where(ee => ee.EEId == eeId).FirstOrDefault();
+            _service.Save(bankInfo);
 
-                context.Employees.Remove(actualEmployee);
-                context.SaveChanges();
+            using EmployeeDbContext context = _factory.CreateDbContext();
+            Employee actualEmployee = context.Employees.Where(ee => ee.EEId == eeId).FirstOrDefault();
 
-                Assert.NotNull(actualEmployee);
-                Assert.False(actualEmployee.Location == expectedEmployee.Location);
-            }
-            catch (InvalidEmployeeFieldValueException ex)
-            {
-                Console.WriteLine(ex.Value);
-            }
+            context.Employees.Remove(actualEmployee);
+            context.SaveChanges();
+
+            Assert.NotNull(actualEmployee);
+            Assert.False(actualEmployee.Location == expectedEmployee.Location);
         }
 
         [Fact]
         public void General_Information_should_not_Update_Bank_Information()
         {
-            try { 
             IPersonalInformation bankInfo = expectedEmployee;
 
             _service.Save(bankInfo);
@@ -74,11 +66,6 @@ namespace Pms.Employees.Tests.ServiceLayer.EfCore
             Assert.NotNull(actualEmployee);
             Assert.False(actualEmployee.AccountNumber == expectedEmployee.AccountNumber);
         }
-            catch (InvalidEmployeeFieldValueException ex)
-            {
-                Console.WriteLine(ex.Value);
-            }
-}
 
         [Fact]
         public void Should_Throw_Exception_When_Adding_Employee()
@@ -89,6 +76,5 @@ namespace Pms.Employees.Tests.ServiceLayer.EfCore
                 _service.Save(employee);
             });
         }
-
     }
 }

@@ -23,7 +23,7 @@ namespace Pms.Employees.Domain
 
         [JsonProperty("middle_name")]
         public string MiddleName { get; set; } = string.Empty;
-        
+
         public string NameExtension { get; set; } = string.Empty;
 
         public string Fullname
@@ -56,18 +56,81 @@ namespace Pms.Employees.Domain
         public string BankCategory { get; set; }
 
 
-        [JsonProperty("pagibig")]
         public string Pagibig { get; set; }
 
-        [JsonProperty("philhealth")]
         public string PhilHealth { get; set; }
 
-        [JsonProperty("sss")]
         public string SSS { get; set; }
 
-        [JsonProperty("tin")]
         public string TIN { get; set; }
 
+
+
+
+        public DateTime BirthDate { get; set; }
+
+        [JsonProperty("birthdate")]
+        public string BirthDateSetter
+        {
+            set
+            {
+                if (value == "" || value == "0000-00-00")
+                    BirthDate = default;
+                else
+                {
+                    DateTime birthDate;
+                    if (DateTime.TryParse(value, out birthDate))
+                        BirthDate = birthDate;
+                    else if (DateTime.TryParseExact(value, new string[] { "MM/dd/yyyy", "M/dd/yyyy" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out birthDate))
+                        BirthDate = birthDate;
+                    else
+                        BirthDate = DateTime.Parse(value);
+                }
+            }
+        }
+
+        public bool Active { get; set; } = true;
+
+        public DateTime DateModified { get; set; }
+
+        public DateTime DateCreated { get; set; }
+
+
+
+        public string CardNumber { get; set; } = string.Empty;
+
+        public string AccountNumber { get; set; } = string.Empty;
+
+        public BankChoices Bank { get; set; }
+        public string BankSetter
+        {
+            set
+            {
+                if (value == "LANDBANK" || value == "LBP")
+                    Bank = BankChoices.LBP;
+                else if (value == "CHINABANK" || value == "CBC")
+                    Bank = BankChoices.CBC;
+                else if (value == "CBC1")
+                    Bank = BankChoices.CBC1;
+                else if (value == "MPALO")
+                    Bank = BankChoices.MPALO;
+                else if (value == "MTAC")
+                    Bank = BankChoices.MTAC;
+                else if (value == "CHK")
+                    Bank = BankChoices.CHK;
+                else
+                    Bank = BankChoices.UNKNOWN;
+            }
+        }
+
+
+
+        public void ValidateAll()
+        {
+            ValidatePersonalInformation();
+            ValidateBankInformation();
+            ValidateGovernmentInformation();
+        }
 
 
         public void ValidatePersonalInformation()
@@ -100,9 +163,9 @@ namespace Pms.Employees.Domain
                 if (MiddleName.Length > 45) throw new InvalidEmployeeFieldValueException(nameof(MiddleName), MiddleName, EEId);
                 if (MiddleName.Any(char.IsDigit)) throw new InvalidEmployeeFieldValueException(nameof(MiddleName), MiddleName, EEId);
                 if (MiddleName.Any(char.IsLower)) throw new InvalidEmployeeFieldValueException(nameof(MiddleName), MiddleName, EEId);
-
             }
         }
+
         public void ValidateBankInformation()
         {
             if (Bank != BankChoices.CHK && AccountNumber == string.Empty)
@@ -128,15 +191,14 @@ namespace Pms.Employees.Domain
                     if (!AccountNumber.Contains("19372"))
                         throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "LBP Account numbers contains '19372'.");
                     break;
-                
+
                 case BankChoices.CBC:
                 case BankChoices.CBC1:
-                    if (AccountNumber.Length != 10)
-                        throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId);
-                    if (AccountNumber.Substring(0, 3) != "222")
-                        throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "CBC/CBC1 Account numbers have leading '222'.");
+                    var validLengths = new int[] { 10, 12, 18, 19 };
+                    if (!validLengths.Contains(AccountNumber.Length))
+                        throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId,"CBC/CBC1 only accepts 10, 12, 18, 19 digit account numbers.");
                     break;
-                
+
                 case BankChoices.MTAC:
                     if (AccountNumber.Length != 13)
                         throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId);
@@ -150,9 +212,10 @@ namespace Pms.Employees.Domain
                     if (AccountNumber.Substring(0, 3) != "756")
                         throw new InvalidEmployeeFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "MPALO Account numbers have leading '756'.");
                     break;
+                case BankChoices.UNKNOWN:
+                    throw new InvalidEmployeeFieldValueException(nameof(Bank), Bank.ToString(), EEId);
             }
         }
-
 
         public void ValidateGovernmentInformation()
         {
@@ -188,71 +251,6 @@ namespace Pms.Employees.Domain
 
             }
 
-        }
-
-        public void ValidateAll()
-        {
-            ValidatePersonalInformation();
-            ValidateBankInformation();
-            ValidateGovernmentInformation();
-        }
-
-
-        public DateTime BirthDate { get; set; }
-
-        [JsonProperty("birthdate")]
-        public string BirthDateSetter
-        {
-            set
-            {
-                if (value == "" || value == "0000-00-00")
-                    BirthDate = default;
-                else
-                {
-                    DateTime birthDate;
-                    if (DateTime.TryParse(value, out birthDate))
-                        BirthDate = birthDate;
-                    else if (DateTime.TryParseExact(value, new string[] { "MM/dd/yyyy", "M/dd/yyyy" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out birthDate))
-                        BirthDate = birthDate;
-                    else
-                        BirthDate = DateTime.Parse(value);
-                }
-            }
-        }
-
-        public bool Active { get; set; } = true;
-
-        public DateTime DateModified { get; set; }
-
-        public DateTime DateCreated { get; set; }
-
-
-
-        [JsonProperty("card_number")]
-        public string CardNumber { get; set; } = string.Empty;
-
-        [JsonProperty("account_number")]
-        public string AccountNumber { get; set; } = string.Empty;
-
-        public BankChoices Bank { get; set; }
-        [JsonProperty("bank_name")]
-        public string BankSetter
-        {
-            set
-            {
-                if (value == "LANDBANK" || value == "LBP")
-                    Bank = BankChoices.LBP;
-                else if (value == "CHINABANK" || value == "CBC")
-                    Bank = BankChoices.CBC;
-                else if (value == "CBC1")
-                    Bank = BankChoices.CBC1;
-                else if (value == "MPALO")
-                    Bank = BankChoices.MPALO;
-                else if (value == "MTAC")
-                    Bank = BankChoices.MTAC;
-                else
-                    Bank = BankChoices.CHK;
-            }
         }
 
     }

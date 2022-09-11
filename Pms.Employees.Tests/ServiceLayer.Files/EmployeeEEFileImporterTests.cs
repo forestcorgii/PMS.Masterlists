@@ -15,28 +15,24 @@ namespace Pms.Employees.ServiceLayer.Files.Tests
 {
     public class EmployeeEEFileImporterTests
     {
-        private IDbContextFactory<EmployeeDbContext> _factory;
-        private IManageEmployeeService _service;
-
-        public EmployeeEEFileImporterTests()
+        public class An_extracted_employees_from_EE_DATA_import_can_be_saved
         {
-            _factory = new EmployeeDbContextFactoryFixture();
-            _service = new EmployeeManager(_factory);
+            [Fact()]
+            public void if_this_does_not_throw_an_exception()
+            {
+                EmployeeEEFileImporter importer = new();
+
+                string filename = $@"{AppDomain.CurrentDomain.BaseDirectory}\TESTDATA\EE DATA 2209.xls";
+                IEnumerable<IEEFileInformation> actualBankInformations = importer.StartImport(filename);
+
+                foreach (Employee actualBankInformation in actualBankInformations)
+                    actualBankInformation.ValidateBankInformation();
+
+                Assert.NotNull(actualBankInformations);
+                Assert.NotEmpty(actualBankInformations);
+
+            }
         }
 
-        [Fact()]
-        public void ShouldImportEEFile()
-        {
-            EmployeeEEFileImporter importer = new();
-
-            string filename = $@"{AppDomain.CurrentDomain.BaseDirectory}\TESTDATA\EE DATA_as of 202208.xls";
-            IEnumerable<IEEFileInformation> actualBankInformations = importer.StartImport(filename);
-
-            _service.Save(actualBankInformations.Last());
-
-            Assert.NotNull(actualBankInformations);
-            Assert.NotEmpty(actualBankInformations);
-
-        }
     }
 }

@@ -40,15 +40,17 @@ namespace Pms.Employees.ServiceLayer
             employee.MiddleName = generalInfo.MiddleName.Trim();
             employee.BirthDate = generalInfo.BirthDate;
 
-            employee.PayrollCode = generalInfo.PayrollCode;
+
+            //employee.PayrollCode = generalInfo.PayrollCode;
             employee.BankCategory = generalInfo.BankCategory;
             employee.Location = generalInfo.Location;
             employee.Site = generalInfo.Site;
 
-            employee.Pagibig = generalInfo.Pagibig;
-            employee.PhilHealth = generalInfo.PhilHealth;
-            employee.SSS = generalInfo.SSS;
-            employee.TIN = generalInfo.TIN;
+
+            //employee.Pagibig = generalInfo.Pagibig;
+            //employee.PhilHealth = generalInfo.PhilHealth;
+            //employee.SSS = generalInfo.SSS;
+            //employee.TIN = generalInfo.TIN;
             employee.Active = generalInfo.Active;
 
             employee.ValidatePersonalInformation();

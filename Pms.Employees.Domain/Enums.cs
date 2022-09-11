@@ -23,6 +23,7 @@ namespace Pms.Employees.Domain
             CBC1 = 111,
             MTAC = 102,
             MPALO = 103,
+            UNKNOWN = 404,
         }
     }
 }

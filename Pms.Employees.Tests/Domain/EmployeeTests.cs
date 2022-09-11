@@ -293,7 +293,7 @@ namespace Pms.Employees.Tests.Domain
             [InlineData(BankChoices.CBC1)]
             [InlineData(BankChoices.MTAC)]
             [InlineData(BankChoices.MPALO)]
-            public void if_it_throws_exception_when_bank_is_empty(BankChoices bank)
+            public void if_it_throws_exception_when_account_number_is_empty(BankChoices bank)
             {
                 Assert.Throws<InvalidEmployeeFieldValueException>(() =>
                 {
@@ -347,34 +347,48 @@ namespace Pms.Employees.Tests.Domain
 
 
 
-            [Fact]
-            public void if_it_throws_exception_when_bank_is_CBC_CBC1_and_length_is_not_10()
+            [Theory]
+            [InlineData(1)]
+            [InlineData(2)]
+            [InlineData(3)]
+            [InlineData(4)]
+            [InlineData(5)]
+            [InlineData(6)]
+            [InlineData(7)]
+            [InlineData(8)]
+            [InlineData(9)]
+            [InlineData(11)]
+            [InlineData(13)]
+            [InlineData(14)]
+            [InlineData(15)]
+            [InlineData(16)]
+            [InlineData(17)]
+            [InlineData(20)]
+            [InlineData(21)]
+            public void if_it_throws_exception_when_bank_is_CBC_CBC1_and_length_is_not_10_12_18_19(int length)
             {
                 Assert.Throws<InvalidEmployeeFieldValueException>(() =>
                 {
                     Employee employee = new();
                     employee.Bank = BankChoices.CBC;
-                    employee.AccountNumber = "2220945312";
-                    employee.AccountNumber = employee.AccountNumber.PadRight(14);
+                    employee.AccountNumber = employee.AccountNumber.PadRight(length);
                     employee.ValidateBankInformation();
                 });
             }
 
-            [Fact]
-            public void if_it_throws_exception_when_bank_is_CBC_CBC1_and_it_is_does_not_have_a_leading_222()
+
+            [Theory]
+            [InlineData(10)]
+            [InlineData(12)]
+            [InlineData(18)]
+            [InlineData(19)]
+            public void if_it_does_not_throws_exception_when_bank_is_CBC_CBC1_and_length_is_10_12_18_19(int length)
             {
-                Assert.Throws<InvalidEmployeeFieldValueException>(() =>
-                {
                     Employee employee = new();
                     employee.Bank = BankChoices.CBC;
-                    employee.AccountNumber = "2120945312";
+                    employee.AccountNumber = employee.AccountNumber.PadRight(length);
                     employee.ValidateBankInformation();
-                });
             }
-
-
-
-
 
 
 
@@ -441,7 +455,7 @@ namespace Pms.Employees.Tests.Domain
             }
 
 
-             
+
 
 
 
