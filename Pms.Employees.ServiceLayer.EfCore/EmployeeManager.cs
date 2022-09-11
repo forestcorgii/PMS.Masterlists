@@ -115,7 +115,7 @@ namespace Pms.Employees.ServiceLayer
             AddOrUpdate(employee);
         }
 
-        public void Save(IEEFileInformation eeFileInfo)
+        public void Save(IEEDataInformation eeFileInfo)
         {
             Validate(eeFileInfo.EEId);
 

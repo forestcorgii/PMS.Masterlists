@@ -8,9 +8,9 @@ using System.IO;
 
 namespace Pms.Employees.ServiceLayer.Files
 {
-    public class EmployeeEEFileImporter
+    public class EmployeeEEDataImporter
     {
-        public IEnumerable<IEEFileInformation> StartImport(string fileName)
+        public IEnumerable<IEEDataInformation> StartImport(string fileName)
         {
             IWorkbook nWorkbook;
             using (var nTemplateFile = new FileStream(fileName, FileMode.Open, FileAccess.ReadWrite))
@@ -18,7 +18,7 @@ namespace Pms.Employees.ServiceLayer.Files
             HSSFFormulaEvaluator formulator = new HSSFFormulaEvaluator(nWorkbook);
             ISheet nSheet = nWorkbook.GetSheetAt(0);
 
-            List<IEEFileInformation> employees = new();
+            List<IEEDataInformation> employees = new();
             int i = 6;
             while (i <= nSheet.LastRowNum)
             {
@@ -40,7 +40,7 @@ namespace Pms.Employees.ServiceLayer.Files
 
                     employee.ValidateAll();
 
-                    IEEFileInformation personal = employee;
+                    IEEDataInformation personal = employee;
                     employees.Add(personal);
                 }
                 i++;

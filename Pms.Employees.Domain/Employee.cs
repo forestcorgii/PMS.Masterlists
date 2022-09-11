@@ -8,7 +8,7 @@ using static Pms.Employees.Domain.Enums;
 
 namespace Pms.Employees.Domain
 {
-    public class Employee : IPersonalInformation, IBankInformation, IGovernmentInformation, IEEFileInformation
+    public class Employee : IPersonalInformation, IBankInformation, IGovernmentInformation, IEEDataInformation
     {
 
         [JsonProperty("idNo")]

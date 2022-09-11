@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Pms.Employees.Domain
 {
-    public interface IEEFileInformation
+    public interface IEEDataInformation
     {
         string EEId { get; set; }
         

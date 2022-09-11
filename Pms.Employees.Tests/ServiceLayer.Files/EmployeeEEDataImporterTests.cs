@@ -13,17 +13,17 @@ using Pms.Employees.Domain;
 
 namespace Pms.Employees.ServiceLayer.Files.Tests
 {
-    public class EmployeeEEFileImporterTests
+    public class EmployeeEEDataImporterTests
     {
         public class An_extracted_employees_from_EE_DATA_import_can_be_saved
         {
             [Fact()]
             public void if_this_does_not_throw_an_exception()
             {
-                EmployeeEEFileImporter importer = new();
+                EmployeeEEDataImporter importer = new();
 
                 string filename = $@"{AppDomain.CurrentDomain.BaseDirectory}\TESTDATA\EE DATA 2209.xls";
-                IEnumerable<IEEFileInformation> actualBankInformations = importer.StartImport(filename);
+                IEnumerable<IEEDataInformation> actualBankInformations = importer.StartImport(filename);
 
                 foreach (Employee actualBankInformation in actualBankInformations)
                     actualBankInformation.ValidateBankInformation();
