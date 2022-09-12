@@ -1,14 +1,13 @@
 ﻿using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using Pms.Employees.Domain;
-using Pms.Employees.Domain.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
 namespace Pms.Employees.ServiceLayer.Files
 {
-    public class EmployeeBankInformationImporter : IImportEmployeeService
+    public class EmployeeBankInformationImporter
     {
         public IEnumerable<IBankInformation> StartImport(string fileName)
         {

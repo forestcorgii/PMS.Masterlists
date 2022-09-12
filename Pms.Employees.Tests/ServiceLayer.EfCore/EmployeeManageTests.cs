@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pms.Employees.Domain;
 using Pms.Employees.Domain.Exceptions;
-using Pms.Employees.Domain.Services;
 using Pms.Employees.Persistence;
 using Pms.Employees.ServiceLayer;
 using Pms.Employees.ServiceLayer.EfCore;
@@ -18,7 +17,7 @@ namespace Pms.Employees.Tests.ServiceLayer.EfCore
     public class EmployeeManageTests
     {
         private IDbContextFactory<EmployeeDbContext> _factory;
-        private IManageEmployeeService _service;
+        private EmployeeManager _service;
 
         private string eeId;
         private Employee expectedEmployee;

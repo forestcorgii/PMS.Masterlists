@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pms.Employees.Domain;
 using Pms.Employees.Domain.Exceptions;
-using Pms.Employees.Domain.Services;
 using Pms.Employees.Persistence;
 using Pms.Employees.ServiceLayer.EfCore;
 using System;
@@ -12,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Pms.Employees.ServiceLayer
 {
-    public class EmployeeManager : IManageEmployeeService
+    public class EmployeeManager 
     {
         private IDbContextFactory<EmployeeDbContext> _factory;
 
