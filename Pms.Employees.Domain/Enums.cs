@@ -25,5 +25,12 @@ namespace Pms.Employees.Domain
             MPALO = 103,
             UNKNOWN = 404,
         }
+
+
+        public enum PayrollRegisterTypeChoices
+        {
+            PD = 10,
+            KS = 11
+        }
     }
 }
