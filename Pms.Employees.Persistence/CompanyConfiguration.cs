@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Pms.Employees.Persistence
 {
-    public class CompanyConfiguration : IEntityTypeConfiguration<CompanyView>
+    public class CompanyConfiguration : IEntityTypeConfiguration<Company>
     {
-        public void Configure(EntityTypeBuilder<CompanyView> builder)
+        public void Configure(EntityTypeBuilder<Company> builder)
         {
             builder.ToTable("company").HasKey(ts => ts.CompanyId);
 
@@ -20,6 +20,7 @@ namespace Pms.Employees.Persistence
             builder.Property(cc => cc.Site).HasColumnType("VARCHAR(20)");
 
             builder.Property(cc => cc.MinimumRate).HasColumnType("DOUBLE(6,2)");
+           
         }
     }
 }

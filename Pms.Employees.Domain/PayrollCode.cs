@@ -19,6 +19,23 @@ namespace Pms.Employees.Domain
 
         public PayrollRegisterTypeChoices Process { get; set; }
 
+
+
+        public PayrollCode() { }
+        public PayrollCode(string name, string site)
+        {
+            Name = name;
+            Site = site;
+            PayrollCodeId = GenerateId();
+        }
+
+
+
         public string GenerateId() => $"{Site[0]}-{Name}";
+
+        public override string ToString()
+        {
+            return PayrollCodeId;
+        }
     }
 }

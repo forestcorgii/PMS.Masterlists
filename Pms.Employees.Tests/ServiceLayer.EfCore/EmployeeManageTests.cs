@@ -28,7 +28,7 @@ namespace Pms.Employees.Tests.ServiceLayer.EfCore
             _service = new EmployeeManager(_factory);
 
             eeId = "ABCD";
-            expectedEmployee = AddSeedEmployee(eeId, "P1A", "CHK", "SOFTWARE", "000000001", "00000000000001");
+            expectedEmployee = AddSeedEmployee(eeId, "M-P1A", "CHK", "SOFTWARE", "000000001", "00000000000001");
         }
 
         [Fact]

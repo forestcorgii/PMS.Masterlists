@@ -17,6 +17,39 @@ namespace Pms.Employees.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.17");
 
+            modelBuilder.Entity("Pms.Employees.Domain.Company", b =>
+                {
+                    b.Property<string>("CompanyId")
+                        .HasColumnType("VARCHAR(35)");
+
+                    b.Property<string>("Acronym")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(10)");
+
+                    b.Property<byte>("BranchCode")
+                        .HasColumnType("TINYINT");
+
+                    b.Property<double>("MinimumRate")
+                        .HasColumnType("DOUBLE(6,2)");
+
+                    b.Property<string>("Region")
+                        .HasColumnType("VARCHAR(10)");
+
+                    b.Property<string>("RegisteredName")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(100)");
+
+                    b.Property<string>("Site")
+                        .HasColumnType("VARCHAR(20)");
+
+                    b.Property<string>("TIN")
+                        .HasColumnType("VARCHAR(20)");
+
+                    b.HasKey("CompanyId");
+
+                    b.ToTable("company");
+                });
+
             modelBuilder.Entity("Pms.Employees.Domain.Employee", b =>
                 {
                     b.Property<string>("EEId")
@@ -85,6 +118,31 @@ namespace Pms.Employees.Persistence.Migrations
                     b.HasKey("EEId");
 
                     b.ToTable("masterlist");
+                });
+
+            modelBuilder.Entity("Pms.Employees.Domain.PayrollCode", b =>
+                {
+                    b.Property<string>("PayrollCodeId")
+                        .HasColumnType("VARCHAR(12)");
+
+                    b.Property<string>("CompanyId")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(35)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(10)");
+
+                    b.Property<byte>("Process")
+                        .HasColumnType("TINYINT");
+
+                    b.Property<string>("Site")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(20)");
+
+                    b.HasKey("PayrollCodeId");
+
+                    b.ToTable("PayrollCodes");
                 });
 #pragma warning restore 612, 618
         }

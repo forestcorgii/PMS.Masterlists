@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Pms.Employees.ServiceLayer
 {
-    public class EmployeeManager 
+    public class EmployeeManager
     {
         private IDbContextFactory<EmployeeDbContext> _factory;
 
@@ -73,6 +73,9 @@ namespace Pms.Employees.ServiceLayer
             employee.PayrollCode = bankInfo.PayrollCode;
 
             employee.ValidateBankInformation();
+
+            if (!Context.PayrollCodes.Any(pc => pc.PayrollCodeId == bankInfo.PayrollCode))
+                throw new InvalidEmployeeFieldValueException("Payroll Code", employee.PayrollCode, employee.EEId, "Unknown Payroll code.");
 
             Employee hasDuplicateAccountNumber = null;
             Employee hasDuplicateCardNumber = null;
