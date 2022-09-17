@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Pms.Masterlists.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Pms.Masterlists.Domain.Enums;
 
 namespace Pms.Masterlists.Domain
 {
@@ -17,11 +17,12 @@ namespace Pms.Masterlists.Domain
 
         public string Site { get; set; }
 
-        public PayrollRegisterTypeChoices Process { get; set; }
+        public PayrollRegisterTypes Process { get; set; }
 
 
 
         public PayrollCode() { }
+
         public PayrollCode(string name, string site)
         {
             Name = name;

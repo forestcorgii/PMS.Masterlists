@@ -1,4 +1,5 @@
 ﻿using Pms.Masterlists.Domain;
+using Pms.Masterlists.Domain.Enums;
 using Pms.Masterlists.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using static Pms.Masterlists.Domain.Enums;
 
 namespace Pms.Masterlists.Tests.Domain
 {

@@ -12,9 +12,8 @@ namespace Pms.Masterlists.Tests
         public static Employee AddSeedEmployee(string eeId, string payrollCode, string bankCategory, string location, string accountNumber, string cardNumber)
         {
             Employee employee = new();
-                employee .EEId = eeId;
+            employee.EEId = eeId;
             employee.PayrollCode = payrollCode;
-            employee.BankCategory = bankCategory;
             employee.Location = location;
             employee.AccountNumber = accountNumber;
             employee.CardNumber = cardNumber;

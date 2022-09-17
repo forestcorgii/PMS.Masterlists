@@ -21,26 +21,7 @@ namespace Pms.Masterlists.ServiceLayer.EfCore
             EmployeeDbContext Context = _factory.CreateDbContext();
             return Context.Employees.AsNoTracking();
         }
-
-        public IQueryable<Employee> FilterEmployees(string searchString, string payrollCode)
-        {
-            IQueryable<Employee> employees = GetEmployees();
-            
-            if (payrollCode != "")
-                employees = employees.FilterByPayrollCode(payrollCode);
-            else if (searchString != "")
-                employees = employees.FilterBySearchString(searchString);
-
-            return employees;
-        }
-
-
-        public IEnumerable<string> ListEmployeePayrollCodes() =>
-            GetEmployees().ExtractPayrollCodes();
-
-        public IEnumerable<string> ListEmployeeBankCategory(string payrollCode) =>
-            GetEmployees().ExtractBankCategories(payrollCode);
-
+ 
         public bool EmployeeExists(string eeId)
         {
             EmployeeDbContext Context = _factory.CreateDbContext();

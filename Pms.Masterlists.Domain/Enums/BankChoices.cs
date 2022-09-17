@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pms.Masterlists.Domain
+namespace Pms.Masterlists.Domain.Enums
 {
-    public static class Enums
-    {
         /// <summary>
         /// CHK - Check
         /// LBP - Land Bank of the Philippines
@@ -25,12 +23,4 @@ namespace Pms.Masterlists.Domain
             MPALO = 103,
             UNKNOWN = 404,
         }
-
-
-        public enum PayrollRegisterTypeChoices
-        {
-            PD = 10,
-            KS = 11
-        }
     }
-}
