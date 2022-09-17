@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pms.Masterlists.Domain;
+using Pms.Masterlists.Domain.Enums;
 using Pms.Masterlists.Domain.Exceptions;
 using Pms.Masterlists.Persistence;
 using Pms.Masterlists.ServiceLayer.EfCore;
@@ -33,7 +34,6 @@ namespace Pms.Masterlists.ServiceLayer.EfCore
             employee.BirthDate = generalInfo.BirthDate;
 
 
-            employee.BankCategory = generalInfo.BankCategory;
             employee.Location = generalInfo.Location;
             employee.Site = generalInfo.Site;
 
@@ -65,12 +65,12 @@ namespace Pms.Masterlists.ServiceLayer.EfCore
 
             Employee hasDuplicateAccountNumber = null;
             Employee hasDuplicateCardNumber = null;
-            if (employee.Bank == Enums.BankChoices.LBP)
+            if (employee.Bank == BankChoices.LBP)
             {
                 hasDuplicateAccountNumber = Context.Employees.Where(ee => ee.EEId != bankInfo.EEId && ee.AccountNumber == bankInfo.AccountNumber).FirstOrDefault();
                 hasDuplicateCardNumber = Context.Employees.Where(ee => ee.EEId != bankInfo.EEId && ee.CardNumber == bankInfo.CardNumber).FirstOrDefault();
             }
-            else if (employee.Bank != Enums.BankChoices.CHK)
+            else if (employee.Bank != BankChoices.CHK)
                 hasDuplicateAccountNumber = Context.Employees.Where(ee => ee.EEId != bankInfo.EEId && ee.AccountNumber == bankInfo.AccountNumber).FirstOrDefault();
 
 

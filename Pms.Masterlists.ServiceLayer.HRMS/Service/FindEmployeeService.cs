@@ -24,11 +24,7 @@ namespace Pms.Masterlists.ServiceLayer.HRMS.Service
             {
                 Employee employee = await HRMSAdapter.GetEmployeeFromHRMS<Employee>(EEId, site);
                 if (employee is not null)
-                {
-                    employee.BankCategory = ParseBankCategory(employee.PayrollCode, employee.BankCategory);
-                    employee.PayrollCode = ParsePayrollCode(employee.PayrollCode);
                     return employee;
-                }
                 return null;
             }
             throw new Exception("HRMS Service is not set.");

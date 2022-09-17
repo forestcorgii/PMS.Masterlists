@@ -1,31 +1,29 @@
 ﻿using Newtonsoft.Json;
+using Pms.Masterlists.Domain.Enums;
 using Pms.Masterlists.Domain.Exceptions;
 using System;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using static Pms.Masterlists.Domain.Enums;
 
 namespace Pms.Masterlists.Domain
 {
     public class Employee : IPersonalInformation, IBankInformation, IGovernmentInformation, IEEDataInformation
     {
-
+        #region COMPANY
         [JsonProperty("idNo")]
         public string EEId { get; set; }
+        public string Location { get; set; }
+        public string JobCode { get; set; }
+        public string Site { get; set; }
+        public bool Active { get; set; } = true;
+        #endregion
 
-
-        [JsonProperty("first_name")]
+        #region PERSONAL
         public string FirstName { get; set; } = string.Empty;
-
-        [JsonProperty("last_name")]
         public string LastName { get; set; } = string.Empty;
-
-        [JsonProperty("middle_name")]
         public string MiddleName { get; set; } = string.Empty;
-
         public string NameExtension { get; set; } = string.Empty;
-
         public string Fullname
         {
             get
@@ -39,34 +37,8 @@ namespace Pms.Masterlists.Domain
                 return fullName;
             }
         }
-
         public string Gender { get; set; }
-
-
-        [JsonProperty("department")]
-        public string Location { get; set; }
-
-        [JsonProperty("job_location")]
-        public string Site { get; set; }
-
-        public string PayrollCode { get; set; }
-
-        public string BankCategory { get; set; }
-
-
-        public string Pagibig { get; set; }
-
-        public string PhilHealth { get; set; }
-
-        public string SSS { get; set; }
-
-        public string TIN { get; set; }
-
-
-
-
         public DateTime BirthDate { get; set; }
-
         [JsonProperty("birthdate")]
         public string BirthDateSetter
         {
@@ -86,19 +58,19 @@ namespace Pms.Masterlists.Domain
                 }
             }
         }
+        #endregion
 
-        public bool Active { get; set; } = true;
+        #region GOVERNMENT
+        public string Pagibig { get; set; }
+        public string PhilHealth { get; set; }
+        public string SSS { get; set; }
+        public string TIN { get; set; }
+        #endregion
 
-        public DateTime DateModified { get; set; }
-
-        public DateTime DateCreated { get; set; }
-
-
-
+        #region BANK
+        public string PayrollCode { get; set; }
         public string CardNumber { get; set; } = string.Empty;
-
         public string AccountNumber { get; set; } = string.Empty;
-
         public BankChoices Bank { get; set; }
         public string BankSetter
         {
@@ -120,6 +92,12 @@ namespace Pms.Masterlists.Domain
                     Bank = BankChoices.UNKNOWN;
             }
         }
+        #endregion
+
+        public DateTime DateModified { get; set; }
+        public DateTime DateCreated { get; set; }
+        
+
 
 
 

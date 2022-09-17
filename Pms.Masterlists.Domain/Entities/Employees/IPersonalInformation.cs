@@ -15,17 +15,9 @@ namespace Pms.Masterlists.Domain
         string MiddleName { get; set; }
         string NameExtension { get; set; }
         
-        //string Gender { get; set; }
-
         string Location { get; set; }
         string Site { get; set; }
-        //string PayrollCode { get; set; }
-        string BankCategory { get; set; }
         
-        //string Pagibig { get; set; }
-        //string PhilHealth { get; set; }
-        //string SSS { get; set; }
-        //string TIN { get; set; }
         DateTime BirthDate { get; set; }
         string BirthDateSetter { set; }
         bool Active { get; set; } 
