@@ -1,10 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using Pms.Masterlists.Domain;
+﻿using Pms.Masterlists.Domain.Entities.Employees;
 using Pms.Masterlists.ServiceLayer.HRMS.Adapter;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 

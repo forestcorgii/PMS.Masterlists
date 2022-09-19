@@ -1,14 +1,7 @@
 ﻿using Xunit;
-using Pms.Masterlists.ServiceLayer.Files;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Pms.Masterlists.Persistence;
-using Pms.Masterlists.Tests;
-using Pms.Masterlists.Domain;
+using Pms.Masterlists.Domain.Entities.Employees;
 
 namespace Pms.Masterlists.ServiceLayer.Files.Tests
 {

@@ -1,11 +1,6 @@
-﻿using Pms.Masterlists.Domain;
+﻿using Pms.Masterlists.Domain.Entities.Employees;
 using Pms.Masterlists.Domain.Enums;
 using Pms.Masterlists.Domain.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Pms.Masterlists.Tests.Domain
@@ -14,17 +9,7 @@ namespace Pms.Masterlists.Tests.Domain
     {
         public class An_eeId_is_valid
         {
-
-            [Fact]
-            public void if_it_does_not_accept_lower_case()
-            {
-                Assert.Throws<InvalidFieldValueException>(() =>
-                {
-                    Employee employee = new();
-                    employee.EEId = "DYyj";
-                    employee.ValidatePersonalInformation();
-                });
-            }
+             
             [Fact]
             public void if_it_does_not_accept_characted_lenght_less_than_three()
             {

@@ -6,16 +6,16 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Pms.Masterlists.Domain
+namespace Pms.Masterlists.Domain.Entities.Employees
 {
-    public class Employee : IPersonalInformation, IBankInformation, IGovernmentInformation, IEEDataInformation
+    public class Employee : IPersonalInformation, IBankInformation, IGovernmentInformation, IEEDataInformation,IActive
     {
         #region COMPANY
-        [JsonProperty("idNo")]
         public string EEId { get; set; }
         public string Location { get; set; }
         public string JobCode { get; set; }
         public string Site { get; set; }
+        public string CompanyId { get; set; }
         public bool Active { get; set; } = true;
         #endregion
 

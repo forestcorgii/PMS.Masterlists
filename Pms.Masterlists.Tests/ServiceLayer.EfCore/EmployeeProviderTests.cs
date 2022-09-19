@@ -1,13 +1,8 @@
 ﻿using Xunit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Pms.Masterlists.Persistence;
-using Pms.Masterlists.Domain;
 using Pms.Masterlists.ServiceLayer.EfCore;
+using Pms.Masterlists.Domain.Entities.Employees;
 
 namespace Pms.Masterlists.Tests.ServiceLayer.EfCore
 {

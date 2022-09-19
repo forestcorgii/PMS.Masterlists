@@ -1,7 +1,6 @@
 ﻿using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
-using Pms.Masterlists.Domain;
-using System;
+using Pms.Masterlists.Domain.Entities.Employees;
 using System.Collections.Generic;
 using System.IO;
 

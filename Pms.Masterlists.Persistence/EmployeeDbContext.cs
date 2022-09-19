@@ -2,7 +2,7 @@
 
 
 using Pms.Masterlists.Domain;
-using System;
+using Pms.Masterlists.Domain.Entities.Employees;
 
 namespace Pms.Masterlists.Persistence
 {

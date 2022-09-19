@@ -1,12 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Pms.Masterlists.Domain;
+using Pms.Masterlists.Domain.Entities.Employees;
 using Pms.Masterlists.Persistence;
-using Pms.Masterlists.ServiceLayer.EfCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Pms.Masterlists.ServiceLayer.EfCore
 {
