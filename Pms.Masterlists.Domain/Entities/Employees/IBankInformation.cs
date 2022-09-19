@@ -5,11 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pms.Masterlists.Domain
+namespace Pms.Masterlists.Domain.Entities.Employees
 {
     public interface IBankInformation
     {
         string EEId { get; set; }
+        string FirstName { get; set; }
+        string LastName { get; set; }
+        string MiddleName { get; set; }
+        string NameExtension { get; set; }
+
+
         string CardNumber { get; set; }
         string AccountNumber { get; set; }
         string PayrollCode { get; set; }
