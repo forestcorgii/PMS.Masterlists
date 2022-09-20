@@ -22,6 +22,7 @@ namespace Pms.Masterlists.Persistence
             builder.Property(cc => cc.Location).HasColumnType("VARCHAR(45)");
             builder.Property(cc => cc.Site).HasColumnType("VARCHAR(25)");
             builder.Property(cc => cc.CompanyId).HasColumnType("VARCHAR(25)");
+            builder.Property(cc => cc.JobCode).HasColumnType("VARCHAR(25)");
 
             builder.Property(cc => cc.PayrollCode).HasColumnType("VARCHAR(6)");
             builder.Property(cc => cc.CardNumber).HasColumnType("VARCHAR(30)");
