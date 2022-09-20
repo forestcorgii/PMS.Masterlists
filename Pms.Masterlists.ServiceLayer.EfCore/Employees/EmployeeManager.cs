@@ -39,30 +39,47 @@ namespace Pms.Masterlists.ServiceLayer.EfCore
 
             AddOrUpdate(employee);
         }
-        public void Save(IPersonalInformation info)
+        
+        /// <summary>
+        /// Update Only. Should not insert when employee doesn't exists.
+        /// </summary>
+        /// <param name="info"></param>
+        public void Save(IMasterFileInformation info)
         {
             EmployeeDbContext Context = _factory.CreateDbContext();
             Employee employee = Context.Employees.Where(ee => ee.EEId == info.EEId).FirstOrDefault();
             if (employee is null)
-                employee = new() { EEId = info.EEId };
+                return;
 
-            employee.EEId = info.EEId;
-            employee.FirstName = info.FirstName.Trim();
-            employee.LastName = info.LastName.Trim();
-            employee.MiddleName = info.MiddleName.Trim();
-            employee.BirthDate = info.BirthDate;
-
-
-            employee.Location = info.Location;
-            employee.Site = info.Site;
-
-
-            employee.Active = info.Active;
-
-            employee.ValidatePersonalInformation();
+            employee.JobCode = info.JobCode;
 
             AddOrUpdate(employee);
         }
+
+        //public void Save(IPersonalInformation info)
+        //{
+        //    EmployeeDbContext Context = _factory.CreateDbContext();
+        //    Employee employee = Context.Employees.Where(ee => ee.EEId == info.EEId).FirstOrDefault();
+        //    if (employee is null)
+        //        employee = new() { EEId = info.EEId };
+
+        //    employee.EEId = info.EEId;
+        //    employee.FirstName = info.FirstName.Trim();
+        //    employee.LastName = info.LastName.Trim();
+        //    employee.MiddleName = info.MiddleName.Trim();
+        //    employee.BirthDate = info.BirthDate;
+
+
+        //    employee.Location = info.Location;
+        //    employee.Site = info.Site;
+
+
+        //    employee.Active = info.Active;
+
+        //    employee.ValidatePersonalInformation();
+
+        //    AddOrUpdate(employee);
+        //}
 
         public void Save(IBankInformation info)
         {

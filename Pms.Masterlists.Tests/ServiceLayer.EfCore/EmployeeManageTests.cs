@@ -42,23 +42,23 @@ namespace Pms.Masterlists.Tests.ServiceLayer.EfCore
             Assert.False(actualEmployee.Location == expectedEmployee.Location);
         }
 
-        [Fact]
-        public void General_Information_should_not_Update_Bank_Information()
-        {
-            IPersonalInformation bankInfo = expectedEmployee;
+        //[Fact]
+        //public void General_Information_should_not_Update_Bank_Information()
+        //{
+        //    IPersonalInformation bankInfo = expectedEmployee;
 
-            _service.Save(bankInfo);
+        //    _service.Save(bankInfo);
 
-            using EmployeeDbContext context = _factory.CreateDbContext();
-            Employee actualEmployee = context.Employees.Where(ee => ee.EEId == eeId).FirstOrDefault();
+        //    using EmployeeDbContext context = _factory.CreateDbContext();
+        //    Employee actualEmployee = context.Employees.Where(ee => ee.EEId == eeId).FirstOrDefault();
 
-            context.Employees.Remove(actualEmployee);
-            context.SaveChanges();
+        //    context.Employees.Remove(actualEmployee);
+        //    context.SaveChanges();
 
 
-            Assert.NotNull(actualEmployee);
-            Assert.False(actualEmployee.AccountNumber == expectedEmployee.AccountNumber);
-        }
+        //    Assert.NotNull(actualEmployee);
+        //    Assert.False(actualEmployee.AccountNumber == expectedEmployee.AccountNumber);
+        //}
 
     }
 }

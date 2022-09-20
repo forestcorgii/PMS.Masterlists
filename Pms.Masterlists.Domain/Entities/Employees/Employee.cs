@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace Pms.Masterlists.Domain.Entities.Employees
 {
-    public class Employee : IPersonalInformation, IBankInformation, IGovernmentInformation, IEEDataInformation,IActive
+    public class Employee : IPersonalInformation, IBankInformation, IGovernmentInformation, IEEDataInformation, IActive, IMasterFileInformation
     {
         #region COMPANY
         public string EEId { get; set; }
@@ -96,7 +96,7 @@ namespace Pms.Masterlists.Domain.Entities.Employees
 
         public DateTime DateModified { get; set; }
         public DateTime DateCreated { get; set; }
-        
+
 
 
 
@@ -119,7 +119,7 @@ namespace Pms.Masterlists.Domain.Entities.Employees
             }
             else
                 throw new InvalidFieldValueException(nameof(EEId), EEId, EEId);
-            
+
             if (FirstName is not null && FirstName != string.Empty)
             {
                 if (FirstName.Length < 2) throw new InvalidFieldValueException(nameof(FirstName), FirstName, EEId);

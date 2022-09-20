@@ -37,6 +37,9 @@
     <None Update="TESTDATA\BANK INFORMATION SAMPLE 2209.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="TESTDATA\MASTER FILE.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
