@@ -27,10 +27,10 @@ namespace Pms.Masterlists.ServiceLayer.Files
 
                 IBankInformation bankInfo = new Employee();
                 bankInfo.EEId = row.GetCell(1).GetValue(formulator);
-                bankInfo.LastName = row.GetCell(2).GetValue(formulator);
-                bankInfo.FirstName = row.GetCell(3).GetValue(formulator);
-                bankInfo.MiddleName = row.GetCell(4).GetValue(formulator);
-                bankInfo.NameExtension = row.GetCell(5).GetValue(formulator);
+                bankInfo.LastName = row.GetCell(2).GetValue(formulator).Trim();
+                bankInfo.FirstName = row.GetCell(3).GetValue(formulator).Trim();
+                bankInfo.MiddleName = row.GetCell(4).GetValue(formulator).Trim();
+                bankInfo.NameExtension = row.GetCell(5).GetValue(formulator).Trim();
                 bankInfo.AccountNumber = row.GetCell(6).GetValue(formulator);
                 bankInfo.CardNumber = row.GetCell(7).GetValue(formulator);
                 bankInfo.BankSetter = row.GetCell(8).GetValue(formulator);
