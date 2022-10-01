@@ -24,6 +24,7 @@
     <ProjectReference Include="..\Pms.Masterlists.Persistence\Pms.Masterlists.Persistence.csproj" />
     <ProjectReference Include="..\Pms.Masterlists.ServiceLayer.EfCore\Pms.Masterlists.ServiceLayer.EfCore.csproj" />
     <ProjectReference Include="..\Pms.Masterlists.ServiceLayer.Files\Pms.Masterlists.ServiceLayer.Files.csproj" />
+    <ProjectReference Include="..\Pms.Masterlists.ServiceLayer.HRMS\Pms.Masterlists.ServiceLayer.HRMS.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +36,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="TESTDATA\BANK INFORMATION SAMPLE 2209.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TESTDATA\L EE DATA 2209.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="TESTDATA\MASTER FILE.xls">

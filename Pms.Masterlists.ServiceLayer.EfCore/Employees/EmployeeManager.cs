@@ -25,6 +25,14 @@ namespace Pms.Masterlists.ServiceLayer.EfCore
         {
             if (employee is null)
                 employee = new() { EEId = employee.EEId };
+
+            employee.ValidateAll();
+
+            EmployeeDbContext Context = _factory.CreateDbContext();
+            ValidateDuplicate(employee, Context);
+            ValidatePayrollCode(employee, Context);
+
+
             AddOrUpdate(employee);
         }
         public void Save(IActive info)
@@ -39,7 +47,7 @@ namespace Pms.Masterlists.ServiceLayer.EfCore
 
             AddOrUpdate(employee);
         }
-        
+
         /// <summary>
         /// Update Only. Should not insert when employee doesn't exists.
         /// </summary>
@@ -56,30 +64,72 @@ namespace Pms.Masterlists.ServiceLayer.EfCore
             AddOrUpdate(employee);
         }
 
-        //public void Save(IPersonalInformation info)
-        //{
-        //    EmployeeDbContext Context = _factory.CreateDbContext();
-        //    Employee employee = Context.Employees.Where(ee => ee.EEId == info.EEId).FirstOrDefault();
-        //    if (employee is null)
-        //        employee = new() { EEId = info.EEId };
 
-        //    employee.EEId = info.EEId;
-        //    employee.FirstName = info.FirstName.Trim();
-        //    employee.LastName = info.LastName.Trim();
-        //    employee.MiddleName = info.MiddleName.Trim();
-        //    employee.BirthDate = info.BirthDate;
+        public void Save(IGovernmentInformation info)
+        {
+            EmployeeDbContext Context = _factory.CreateDbContext();
+            Employee employee = Context.Employees.Where(ee => ee.EEId == info.EEId).FirstOrDefault();
+            if (employee is null)
+                employee = new() { EEId = info.EEId };
+
+            employee.Pagibig = info.Pagibig;
+            employee.PhilHealth = info.PhilHealth;
+            employee.SSS = info.SSS;
+            employee.TIN = info.TIN;
+
+            employee.ValidateGovernmentInformation();
+
+            AddOrUpdate(employee);
+        }
+
+        public void Save(IHRMSInformation info)
+        {
+            EmployeeDbContext Context = _factory.CreateDbContext();
+            Employee employee = Context.Employees.Where(ee => ee.EEId == info.EEId).FirstOrDefault();
+            if (employee is null)
+                employee = new() { EEId = info.EEId };
+
+            employee.EEId = info.EEId;
+            employee.FirstName = info.FirstName;
+            employee.LastName = info.LastName;
+            employee.MiddleName = info.MiddleName;
+            employee.JobCode = info.JobCode;
+            employee.Location = info.Location;
+
+            employee.ValidateGovernmentInformation();
+            employee.ValidatePersonalInformation();
+
+            AddOrUpdate(employee);
+        }
 
 
-        //    employee.Location = info.Location;
-        //    employee.Site = info.Site;
+        public void Save(IEEDataInformation info)
+        {
+            EmployeeDbContext Context = _factory.CreateDbContext();
+            Employee employee = Context.Employees.Where(ee => ee.EEId == info.EEId).FirstOrDefault();
+            if (employee is null)
+                employee = new() { EEId = info.EEId };
 
+            if (!string.IsNullOrEmpty(info.FirstName) && !string.IsNullOrEmpty(info.LastName))
+            {
+                employee.FirstName = info.FirstName;
+                employee.LastName = info.LastName;
+                employee.MiddleName = info.MiddleName;
+                employee.NameExtension = info.NameExtension;
+            }
 
-        //    employee.Active = info.Active;
+            employee.BirthDate = info.BirthDate;
 
-        //    employee.ValidatePersonalInformation();
+            employee.Pagibig = info.Pagibig.Replace("-", string.Empty);
+            employee.PhilHealth = info.PhilHealth.Replace("-", string.Empty);
+            employee.SSS = info.SSS.Replace("-", string.Empty);
+            employee.TIN = info.TIN.Replace("-", string.Empty);
 
-        //    AddOrUpdate(employee);
-        //}
+            employee.ValidateGovernmentInformation();
+            employee.ValidatePersonalInformation();
+
+            AddOrUpdate(employee);
+        }
 
         public void Save(IBankInformation info)
         {
@@ -104,78 +154,14 @@ namespace Pms.Masterlists.ServiceLayer.EfCore
 
             employee.ValidateBankInformation();
 
-            if (Context.PayrollCodes.Where(pc => pc.PayrollCodeId == info.PayrollCode).FirstOrDefault() is PayrollCode payrollCode)
-            {
-                employee.CompanyId = payrollCode.CompanyId;
-                employee.Site = payrollCode.Site;
-            }
-            else
-                throw new InvalidFieldValueException("Payroll Code", employee.PayrollCode, employee.EEId, "Unknown Payroll code.");
+            ValidateDuplicate(employee, Context);
+            ValidatePayrollCode(employee, Context);
 
 
-            Employee hasDuplicateAccountNumber = null;
-            Employee hasDuplicateCardNumber = null;
-            if (employee.Bank == BankChoices.LBP)
-            {
-                hasDuplicateAccountNumber = Context.Employees.Where(ee => ee.EEId != info.EEId && ee.AccountNumber == info.AccountNumber).FirstOrDefault();
-                hasDuplicateCardNumber = Context.Employees.Where(ee => ee.EEId != info.EEId && ee.CardNumber == info.CardNumber).FirstOrDefault();
-            }
-            else if (employee.Bank != BankChoices.CHK)
-                hasDuplicateAccountNumber = Context.Employees.Where(ee => ee.EEId != info.EEId && ee.AccountNumber == info.AccountNumber).FirstOrDefault();
-
-
-            if (hasDuplicateAccountNumber is not null)
-                throw new DuplicateBankInformationException(employee.EEId, hasDuplicateAccountNumber.EEId, "Account Number", hasDuplicateAccountNumber.AccountNumber);
-
-            if (hasDuplicateCardNumber is not null)
-                throw new DuplicateBankInformationException(employee.EEId, hasDuplicateCardNumber.EEId, "Card Number", hasDuplicateCardNumber.CardNumber);
 
 
             AddOrUpdate(employee);
         }
-
-        public void Save(IGovernmentInformation info)
-        {
-            EmployeeDbContext Context = _factory.CreateDbContext();
-            Employee employee = Context.Employees.Where(ee => ee.EEId == info.EEId).FirstOrDefault();
-            if (employee is null)
-                employee = new() { EEId = info.EEId };
-
-            employee.Pagibig = info.Pagibig;
-            employee.PhilHealth = info.PhilHealth;
-            employee.SSS = info.SSS;
-            employee.TIN = info.TIN;
-
-            employee.ValidateGovernmentInformation();
-
-            AddOrUpdate(employee);
-        }
-
-        public void Save(IEEDataInformation info)
-        {
-            EmployeeDbContext Context = _factory.CreateDbContext();
-            Employee employee = Context.Employees.Where(ee => ee.EEId == info.EEId).FirstOrDefault();
-            if (employee is null)
-                employee = new() { EEId = info.EEId };
-
-            employee.FirstName = info.FirstName;
-            employee.LastName = info.LastName;
-            employee.MiddleName = info.MiddleName;
-            employee.NameExtension = info.NameExtension;
-            employee.BirthDate = info.BirthDate;
-
-            employee.Pagibig = info.Pagibig;
-            employee.PhilHealth = info.PhilHealth;
-            employee.SSS = info.SSS;
-            employee.TIN = info.TIN;
-
-            employee.ValidateGovernmentInformation();
-            employee.ValidatePersonalInformation();
-
-            AddOrUpdate(employee);
-        }
-
-
 
         private void AddOrUpdate(Employee employee)
         {
@@ -186,5 +172,45 @@ namespace Pms.Masterlists.ServiceLayer.EfCore
                 Context.Add(employee);
             Context.SaveChanges();
         }
+
+
+
+
+
+
+        public void ValidatePayrollCode(Employee employee, EmployeeDbContext Context)
+        {
+            if (Context.PayrollCodes.Where(pc => pc.PayrollCodeId == employee.PayrollCode).FirstOrDefault() is PayrollCode payrollCode)
+            {
+                employee.CompanyId = payrollCode.CompanyId;
+                employee.Site = payrollCode.Site;
+            }
+            else
+                throw new InvalidFieldValueException("Payroll Code", employee.PayrollCode, employee.EEId, "Unknown Payroll code.");
+
+        }
+
+        public void ValidateDuplicate(Employee employee, EmployeeDbContext Context)
+        {
+            Employee hasDuplicateAccountNumber = null;
+            Employee hasDuplicateCardNumber = null;
+            if (employee.Bank == BankChoices.LBP)
+            {
+                hasDuplicateAccountNumber = Context.Employees.Where(ee => ee.EEId != employee.EEId && ee.AccountNumber == employee.AccountNumber).FirstOrDefault();
+                hasDuplicateCardNumber = Context.Employees.Where(ee => ee.EEId != employee.EEId && ee.CardNumber == employee.CardNumber).FirstOrDefault();
+            }
+            else if (employee.Bank != BankChoices.CHK)
+                hasDuplicateAccountNumber = Context.Employees.Where(ee => ee.EEId != employee.EEId && ee.AccountNumber == employee.AccountNumber).FirstOrDefault();
+
+
+            if (hasDuplicateAccountNumber is not null)
+                throw new DuplicateBankInformationException(employee.EEId, hasDuplicateAccountNumber.EEId, "Account Number", hasDuplicateAccountNumber.AccountNumber);
+
+            if (hasDuplicateCardNumber is not null)
+                throw new DuplicateBankInformationException(employee.EEId, hasDuplicateCardNumber.EEId, "Card Number", hasDuplicateCardNumber.CardNumber);
+
+        }
+
+
     }
 }

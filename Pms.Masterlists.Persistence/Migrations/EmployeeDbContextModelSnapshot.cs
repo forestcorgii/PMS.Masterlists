@@ -79,6 +79,9 @@ namespace Pms.Masterlists.Persistence.Migrations
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("DATETIME");
 
+                    b.Property<DateTime>("DateResigned")
+                        .HasColumnType("DATE");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("VARCHAR(45)");
 

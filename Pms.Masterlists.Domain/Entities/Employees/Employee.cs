@@ -8,22 +8,54 @@ using System.Text.RegularExpressions;
 
 namespace Pms.Masterlists.Domain.Entities.Employees
 {
-    public class Employee : IPersonalInformation, IBankInformation, IGovernmentInformation, IEEDataInformation, IActive, IMasterFileInformation
+    public class Employee : IHRMSInformation, IBankInformation, IGovernmentInformation, IEEDataInformation, IActive, IMasterFileInformation
     {
         #region COMPANY
+        [JsonProperty("idno")]
         public string EEId { get; set; }
+        [JsonProperty("department")]
         public string Location { get; set; }
+        [JsonProperty("jobcode")]
         public string JobCode { get; set; }
         public string Site { get; set; }
         public string CompanyId { get; set; }
+
         public bool Active { get; set; } = true;
+
+        public DateTime DateResigned { get; set; }
+        [JsonProperty("terminated_date")]
+        public string DateResignedSetter
+        {
+            set
+            {
+                if (value == "" || value == "0000-00-00")
+                    DateResigned = default;
+                else
+                {
+                    DateTime dateResigned;
+                    if (DateTime.TryParse(value, out dateResigned))
+                        DateResigned = dateResigned;
+                    else if (DateTime.TryParseExact(value, new string[] { "MM/dd/yyyy", "M/dd/yyyy" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out dateResigned))
+                        DateResigned = dateResigned;
+                    else
+                        DateResigned = DateTime.Parse(value);
+                }
+            }
+        }
         #endregion
 
         #region PERSONAL
+        [JsonProperty("first_name")]
         public string FirstName { get; set; } = string.Empty;
+
+        [JsonProperty("last_name")]
         public string LastName { get; set; } = string.Empty;
+        
+        [JsonProperty("middle_name")]
         public string MiddleName { get; set; } = string.Empty;
+        
         public string NameExtension { get; set; } = string.Empty;
+        
         public string Fullname
         {
             get
@@ -37,7 +69,9 @@ namespace Pms.Masterlists.Domain.Entities.Employees
                 return fullName;
             }
         }
+
         public string Gender { get; set; }
+        
         public DateTime BirthDate { get; set; }
         [JsonProperty("birthdate")]
         public string BirthDateSetter
@@ -61,17 +95,33 @@ namespace Pms.Masterlists.Domain.Entities.Employees
         #endregion
 
         #region GOVERNMENT
+        [JsonProperty("pagibig")]
         public string Pagibig { get; set; }
+        
+        [JsonProperty("philhealth")]
         public string PhilHealth { get; set; }
+        
+        [JsonProperty("sss")]
         public string SSS { get; set; }
+        
+        [JsonProperty("tin")]
         public string TIN { get; set; }
+        
         #endregion
 
         #region BANK
+        [JsonProperty("payroll_code")]
         public string PayrollCode { get; set; }
+
+        [JsonProperty("card_number")]
         public string CardNumber { get; set; } = string.Empty;
+        
+        [JsonProperty("account_number")]
         public string AccountNumber { get; set; } = string.Empty;
+        
         public BankChoices Bank { get; set; }
+        
+        [JsonProperty("bank_name")]
         public string BankSetter
         {
             set
@@ -88,6 +138,8 @@ namespace Pms.Masterlists.Domain.Entities.Employees
                     Bank = BankChoices.MTAC;
                 else if (value == "CHK")
                     Bank = BankChoices.CHK;
+                else if (value == "UCPB")
+                    Bank = BankChoices.UCPB;
                 else
                     Bank = BankChoices.UNKNOWN;
             }
@@ -190,6 +242,8 @@ namespace Pms.Masterlists.Domain.Entities.Employees
                     if (AccountNumber.Substring(0, 3) != "756")
                         throw new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "MPALO Account numbers have leading '756'.");
                     break;
+                case BankChoices.UCPB:
+                    throw new InvalidFieldValueException(nameof(Bank), Bank.ToString(), EEId);
                 case BankChoices.UNKNOWN:
                     throw new InvalidFieldValueException(nameof(Bank), Bank.ToString(), EEId);
             }

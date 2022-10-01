@@ -22,5 +22,6 @@ namespace Pms.Masterlists.Domain.Enums
             MTAC = 102,
             MPALO = 103,
             UNKNOWN = 404,
-        }
+            UCPB = 400,
+    }
     }

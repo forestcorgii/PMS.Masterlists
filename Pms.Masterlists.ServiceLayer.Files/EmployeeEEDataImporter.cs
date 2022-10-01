@@ -1,6 +1,7 @@
 ﻿using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using Pms.Masterlists.Domain.Entities.Employees;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -24,25 +25,50 @@ namespace Pms.Masterlists.ServiceLayer.Files
                 if (ValidateRow(row, formulator) == true)
                 {
                     Employee employee = new();
-                    employee.EEId = row.GetCell(1).GetValue(formulator).Trim();
-                    employee.LastName = row.GetCell(2).GetValue(formulator).Trim();
-                    employee.FirstName = row.GetCell(3).GetValue(formulator).Trim();
-                    employee.MiddleName = row.GetCell(4).GetValue(formulator).Trim();
-                    employee.NameExtension = row.GetCell(5).GetValue(formulator).Trim();
-                    employee.Gender = row.GetCell(6).GetValue(formulator).Trim();
-                    employee.BirthDateSetter = row.GetCell(7).GetValue(formulator).Trim();
-                    employee.SSS = row.GetCell(8).GetValue(formulator).Trim().Trim(new char[] { ' ', '\'' });
-                    employee.PhilHealth = row.GetCell(10).GetValue(formulator).Trim().Trim(new char[] { ' ', '\'' });
-                    employee.TIN = row.GetCell(12).GetValue(formulator).Trim().Trim(new char[] { ' ', '\'' });
-                    employee.Pagibig = row.GetCell(14).GetValue(formulator).Trim().Trim(new char[] { ' ', '\'' });
+                    try
+                    {
+                        employee.EEId = row.GetCell(1).GetValue(formulator).Trim();
+                        employee.LastName = row.GetCell(2).GetValue(formulator).Trim();
+                        employee.FirstName = row.GetCell(3).GetValue(formulator).Trim();
+                        employee.MiddleName = row.GetCell(4).GetValue(formulator).Trim();
+                        employee.NameExtension = row.GetCell(5).GetValue(formulator).Trim();
+                        employee.Gender = row.GetCell(6).GetValue(formulator).Trim();
+                        employee.BirthDateSetter = row.GetCell(7).GetValue(formulator).Trim();
+                        employee.SSS = row.GetCell(8).GetValue(formulator)
+                            .Replace(" ", "")
+                            .Replace("-", "")
+                            .Replace("'", "");
+                        employee.PhilHealth = row.GetCell(9).GetValue(formulator)
+                            .Replace(" ", "")
+                            .Replace("-", "")
+                            .Replace("'", "");
+                        employee.TIN = row.GetCell(10).GetValue(formulator)
+                            .Replace(" ", "")
+                            .Replace("-", "")
+                            .Replace("'", "");
+                        employee.Pagibig = row.GetCell(11).GetValue(formulator)
+                            .Replace(" ", "")
+                            .Replace("-", "")
+                            .Replace("'", "");
 
-                    employee.ValidateAll();
+                        employee.ValidateAll();
 
-                    IEEDataInformation personal = employee;
-                    employees.Add(personal);
+                        IEEDataInformation personal = employee;
+                        employees.Add(personal);
+                    }
+                    catch (Exception ex)
+                    {
+                        row.GetCell(0).SetCellValue(ex.Message);
+                        row.RowStyle = Styles.ErrorRow(nWorkbook);
+                    }
                 }
                 i++;
             }
+
+
+            using (var nReportFile = new FileStream(fileName, FileMode.Open, FileAccess.Write))
+                nWorkbook.Write(nReportFile);
+
 
             return employees;
         }
