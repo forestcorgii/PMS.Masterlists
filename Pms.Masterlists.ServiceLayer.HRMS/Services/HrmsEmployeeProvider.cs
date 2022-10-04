@@ -1,15 +1,16 @@
 ﻿using Pms.Masterlists.Domain.Entities.Employees;
 using Pms.Masterlists.ServiceLayer.HRMS.Adapter;
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Pms.Masterlists.ServiceLayer.HRMS.Services
 {
-    public class FindEmployeeService
+    public class HrmsEmployeeProvider
     {
         private readonly HRMSAdapter HRMSAdapter;
-        public FindEmployeeService(HRMSAdapter hrmsAdapter)
+        public HrmsEmployeeProvider(HRMSAdapter hrmsAdapter)
         {
             HRMSAdapter = hrmsAdapter;
         }
@@ -28,6 +29,56 @@ namespace Pms.Masterlists.ServiceLayer.HRMS.Services
             }
             throw new Exception("HRMS Service is not set.");
         }
+
+        public async Task<IEnumerable<Employee>> GetNewlyHiredEmployeesAsync(DateTime fromDate, string site)
+        {
+            if (HRMSAdapter is not null)
+            {
+                IEnumerable<Employee> employees = await HRMSAdapter.GetNewlyHiredEmployeesFromHRMS<Employee>(fromDate, site); ;
+                if (employees is not null)
+                {
+                    foreach (Employee employee in employees)
+                        employee.PayrollCode = ParsePayrollCode(employee.PayrollCode, site);
+                    return employees;
+                }
+                return null;
+            }
+            throw new Exception("HRMS Service is not set.");
+        }
+
+        public async Task<IEnumerable<Employee>> GetResignedEmployeesAsync(DateTime fromDate, string site)
+        {
+            if (HRMSAdapter is not null)
+            {
+                var employees = await HRMSAdapter.GetResignedEmployeesFromHRMS<Employee>(fromDate, site);
+                if (employees is not null)
+                {
+                    foreach (Employee employee in employees)
+                        employee.PayrollCode = ParsePayrollCode(employee.PayrollCode, site);
+                    return employees;
+                }
+                return null;
+            }
+            throw new Exception("HRMS Service is not set.");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         private static string ParsePayrollCode(string payrollCode, string site)
         {

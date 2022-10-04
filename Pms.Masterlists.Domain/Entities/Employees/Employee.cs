@@ -2,6 +2,7 @@
 using Pms.Masterlists.Domain.Enums;
 using Pms.Masterlists.Domain.Exceptions;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -50,12 +51,12 @@ namespace Pms.Masterlists.Domain.Entities.Employees
 
         [JsonProperty("last_name")]
         public string LastName { get; set; } = string.Empty;
-        
+
         [JsonProperty("middle_name")]
         public string MiddleName { get; set; } = string.Empty;
-        
+
         public string NameExtension { get; set; } = string.Empty;
-        
+
         public string Fullname
         {
             get
@@ -71,7 +72,7 @@ namespace Pms.Masterlists.Domain.Entities.Employees
         }
 
         public string Gender { get; set; }
-        
+
         public DateTime BirthDate { get; set; }
         [JsonProperty("birthdate")]
         public string BirthDateSetter
@@ -97,16 +98,16 @@ namespace Pms.Masterlists.Domain.Entities.Employees
         #region GOVERNMENT
         [JsonProperty("pagibig")]
         public string Pagibig { get; set; }
-        
+
         [JsonProperty("philhealth")]
         public string PhilHealth { get; set; }
-        
+
         [JsonProperty("sss")]
         public string SSS { get; set; }
-        
+
         [JsonProperty("tin")]
         public string TIN { get; set; }
-        
+
         #endregion
 
         #region BANK
@@ -115,12 +116,12 @@ namespace Pms.Masterlists.Domain.Entities.Employees
 
         [JsonProperty("card_number")]
         public string CardNumber { get; set; } = string.Empty;
-        
+
         [JsonProperty("account_number")]
         public string AccountNumber { get; set; } = string.Empty;
-        
+
         public BankChoices Bank { get; set; }
-        
+
         [JsonProperty("bank_name")]
         public string BankSetter
         {
@@ -155,18 +156,24 @@ namespace Pms.Masterlists.Domain.Entities.Employees
 
         public void ValidateAll()
         {
-            ValidatePersonalInformation();
-            ValidateBankInformation();
-            ValidateGovernmentInformation();
+            List<InvalidFieldValueException> exceptions = new();
+            exceptions.AddRange(ValidatePersonalInformation(false));
+            exceptions.AddRange(ValidateBankInformation(false));
+            exceptions.AddRange(ValidateGovernmentInformation(false));
+
+            if (exceptions.Any())
+                throw new InvalidFieldValuesException(EEId, exceptions);
         }
 
 
-        public void ValidatePersonalInformation()
+        public List<InvalidFieldValueException> ValidatePersonalInformation(bool throwsException = true)
         {
+            List<InvalidFieldValueException> exceptions = new();
+
             if (EEId is not null && EEId != string.Empty)
             {
-                if (EEId.Length < 3) throw new InvalidFieldValueException(nameof(EEId), EEId, EEId);
-                if (EEId.Length > 4) throw new InvalidFieldValueException(nameof(EEId), EEId, EEId);
+                if (EEId.Length < 3) exceptions.Add(new InvalidFieldValueException(nameof(EEId), EEId, EEId));
+                if (EEId.Length > 4) exceptions.Add(new InvalidFieldValueException(nameof(EEId), EEId, EEId));
                 //if (EEId.Any(char.IsLower)) throw new InvalidEmployeeFieldValueException(nameof(EEId), EEId, EEId);
             }
             else
@@ -174,34 +181,41 @@ namespace Pms.Masterlists.Domain.Entities.Employees
 
             if (FirstName is not null && FirstName != string.Empty)
             {
-                if (FirstName.Length < 2) throw new InvalidFieldValueException(nameof(FirstName), FirstName, EEId);
-                if (FirstName.Length > 45) throw new InvalidFieldValueException(nameof(FirstName), FirstName, EEId);
-                if (FirstName.Any(char.IsDigit)) throw new InvalidFieldValueException(nameof(FirstName), FirstName, EEId);
+                if (FirstName.Length < 2) exceptions.Add(new InvalidFieldValueException(nameof(FirstName), FirstName, EEId));
+                if (FirstName.Length > 45) exceptions.Add(new InvalidFieldValueException(nameof(FirstName), FirstName, EEId));
+                if (FirstName.Any(char.IsDigit)) exceptions.Add(new InvalidFieldValueException(nameof(FirstName), FirstName, EEId));
                 //if (FirstName.Any(char.IsLower)) throw new InvalidEmployeeFieldValueException(nameof(FirstName), FirstName, EEId);
             }
 
             if (LastName is not null && LastName != string.Empty)
             {
-                if (LastName.Length < 2) throw new InvalidFieldValueException(nameof(LastName), LastName, EEId);
-                if (LastName.Length > 45) throw new InvalidFieldValueException(nameof(LastName), LastName, EEId);
-                if (LastName.Any(char.IsDigit)) throw new InvalidFieldValueException(nameof(LastName), LastName, EEId);
+                if (LastName.Length < 2) exceptions.Add(new InvalidFieldValueException(nameof(LastName), LastName, EEId));
+                if (LastName.Length > 45) exceptions.Add(new InvalidFieldValueException(nameof(LastName), LastName, EEId));
+                if (LastName.Any(char.IsDigit)) exceptions.Add(new InvalidFieldValueException(nameof(LastName), LastName, EEId));
                 //if (LastName.Any(char.IsLower)) throw new InvalidEmployeeFieldValueException(nameof(LastName), LastName, EEId);
             }
 
             if (MiddleName is not null && MiddleName != string.Empty)
             {
-                if (MiddleName.Length > 45) throw new InvalidFieldValueException(nameof(MiddleName), MiddleName, EEId);
-                if (MiddleName.Any(char.IsDigit)) throw new InvalidFieldValueException(nameof(MiddleName), MiddleName, EEId);
+                if (MiddleName.Length > 45) exceptions.Add(new InvalidFieldValueException(nameof(MiddleName), MiddleName, EEId));
+                if (MiddleName.Any(char.IsDigit)) exceptions.Add(new InvalidFieldValueException(nameof(MiddleName), MiddleName, EEId));
                 //if (MiddleName.Any(char.IsLower)) throw new InvalidEmployeeFieldValueException(nameof(MiddleName), MiddleName, EEId);
             }
+
+            if (exceptions.Any() && throwsException)
+                throw new InvalidFieldValuesException(EEId, exceptions);
+
+            return exceptions;
         }
 
-        public void ValidateBankInformation()
+        public List<InvalidFieldValueException> ValidateBankInformation(bool throwsException = true)
         {
+            List<InvalidFieldValueException> exceptions = new();
+
             if (Bank != BankChoices.CHK && AccountNumber == string.Empty)
-                throw new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "Should not be blank.");
+                exceptions.Add(new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "Should not be blank."));
             if (AccountNumber.Any(char.IsLetter))
-                throw new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId);
+                exceptions.Add(new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId));
 
             switch (Bank)
             {
@@ -209,80 +223,94 @@ namespace Pms.Masterlists.Domain.Entities.Employees
                     if (CardNumber is not null && CardNumber != string.Empty)
                     {
                         if (CardNumber.Length != 16)
-                            throw new InvalidFieldValueException(nameof(CardNumber), CardNumber, EEId);
+                            exceptions.Add(new InvalidFieldValueException(nameof(CardNumber), CardNumber, EEId));
                         if (CardNumber.Any(char.IsLetter))
-                            throw new InvalidFieldValueException(nameof(CardNumber), CardNumber, EEId);
+                            exceptions.Add(new InvalidFieldValueException(nameof(CardNumber), CardNumber, EEId));
                     }
                     else
-                        throw new InvalidFieldValueException(nameof(CardNumber), CardNumber, EEId, "Should not be blank.");
+                        exceptions.Add(new InvalidFieldValueException(nameof(CardNumber), CardNumber, EEId, "Should not be blank."));
 
                     if (AccountNumber.Length != 19)
-                        throw new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId);
+                        exceptions.Add(new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId));
                     if (!AccountNumber.Contains("19372"))
-                        throw new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "LBP Account numbers contains '19372'.");
+                        exceptions.Add(new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "LBP Account numbers contains '19372'."));
                     break;
 
                 case BankChoices.CBC:
                 case BankChoices.CBC1:
                     var validLengths = new int[] { 10, 12, 18, 19 };
                     if (!validLengths.Contains(AccountNumber.Length))
-                        throw new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "CBC/CBC1 only accepts 10, 12, 18, 19 digit account numbers.");
+                        exceptions.Add(new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "CBC/CBC1 only accepts 10, 12, 18, 19 digit account numbers."));
                     break;
 
                 case BankChoices.MTAC:
                     if (AccountNumber.Length != 13)
-                        throw new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId);
+                        exceptions.Add(new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId));
                     if (AccountNumber.Substring(0, 3) != "525")
-                        throw new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "MTAC Account numbers have leading '525'.");
+                        exceptions.Add(new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "MTAC Account numbers have leading '525'."));
                     break;
 
                 case BankChoices.MPALO:
                     if (AccountNumber.Length != 13)
-                        throw new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId);
+                        exceptions.Add(new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId));
                     if (AccountNumber.Substring(0, 3) != "756")
-                        throw new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "MPALO Account numbers have leading '756'.");
+                        exceptions.Add(new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "MPALO Account numbers have leading '756'."));
                     break;
                 case BankChoices.UCPB:
-                    throw new InvalidFieldValueException(nameof(Bank), Bank.ToString(), EEId);
+                    exceptions.Add(new InvalidFieldValueException(nameof(Bank), Bank.ToString(), EEId));
+                    break;
                 case BankChoices.UNKNOWN:
-                    throw new InvalidFieldValueException(nameof(Bank), Bank.ToString(), EEId);
+                    exceptions.Add(new InvalidFieldValueException(nameof(Bank), Bank.ToString(), EEId));
+                    break;
             }
+
+
+            if (exceptions.Any() && throwsException)
+                throw new InvalidFieldValuesException(EEId, exceptions);
+
+            return exceptions;
         }
 
-        public void ValidateGovernmentInformation()
+        public List<InvalidFieldValueException> ValidateGovernmentInformation(bool throwsException = true)
         {
+            List<InvalidFieldValueException> exceptions = new();
+
             if (Pagibig is not null && Pagibig != string.Empty)
             {
                 if (!Regex.IsMatch(Pagibig, @"^(\d{4}-\d{4}-\d{4}|[0-9]{12})$"))
-                    throw new InvalidFieldValueException(nameof(Pagibig), Pagibig, EEId);
-                if (Pagibig.Any(char.IsLetter)) throw new InvalidFieldValueException(nameof(Pagibig), Pagibig, EEId);
+                    exceptions.Add(new InvalidFieldValueException(nameof(Pagibig), Pagibig, EEId));
+                if (Pagibig.Any(char.IsLetter)) exceptions.Add(new InvalidFieldValueException(nameof(Pagibig), Pagibig, EEId));
 
             }
 
             if (PhilHealth is not null && PhilHealth != string.Empty)
             {
                 if (!Regex.IsMatch(PhilHealth, @"^(\d{2}-\d{9}-\d|[0-9]{12})$"))
-                    throw new InvalidFieldValueException(nameof(PhilHealth), PhilHealth, EEId);
-                if (PhilHealth.Any(char.IsLetter)) throw new InvalidFieldValueException(nameof(PhilHealth), PhilHealth, EEId);
+                    exceptions.Add(new InvalidFieldValueException(nameof(PhilHealth), PhilHealth, EEId));
+                if (PhilHealth.Any(char.IsLetter)) exceptions.Add(new InvalidFieldValueException(nameof(PhilHealth), PhilHealth, EEId));
 
             }
 
             if (SSS is not null && SSS != string.Empty)
             {
                 if (!Regex.IsMatch(SSS, @"^(\d{2}-\d{7}-\d|[0-9]{10})$"))
-                    throw new InvalidFieldValueException(nameof(SSS), SSS, EEId);
-                if (SSS.Any(char.IsLetter)) throw new InvalidFieldValueException(nameof(SSS), SSS, EEId);
+                    exceptions.Add(new InvalidFieldValueException(nameof(SSS), SSS, EEId));
+                if (SSS.Any(char.IsLetter)) exceptions.Add(new InvalidFieldValueException(nameof(SSS), SSS, EEId));
 
             }
 
             if (TIN is not null && TIN != string.Empty)
             {
                 if (!Regex.IsMatch(TIN, @"^(\d{3}-\d{2}-\d{4}|\d{3}-\d{3}-\d{3}|\d{3}-\d{3}-\d{3}-\d{3}|[0-9]{9}|[0-9]{9}0{1,4})$"))
-                    throw new InvalidFieldValueException(nameof(TIN), TIN, EEId);
-                if (TIN.Any(char.IsLetter)) throw new InvalidFieldValueException(nameof(TIN), TIN, EEId);
+                    exceptions.Add(new InvalidFieldValueException(nameof(TIN), TIN, EEId));
+                if (TIN.Any(char.IsLetter)) exceptions.Add(new InvalidFieldValueException(nameof(TIN), TIN, EEId));
 
             }
 
+            if (exceptions.Any() && throwsException)
+                throw new InvalidFieldValuesException(EEId, exceptions);
+
+            return exceptions;
         }
 
     }

@@ -27,12 +27,11 @@ namespace Pms.Masterlists.Domain
         {
             Name = name;
             Site = site;
-            PayrollCodeId = GenerateId();
         }
 
 
 
-        public string GenerateId() => $"{Site[0]}-{Name}";
+        public static string GenerateId(PayrollCode payrollCode) => $"{payrollCode.Site[0]}-{payrollCode.Name}";
 
         public override string ToString()
         {
