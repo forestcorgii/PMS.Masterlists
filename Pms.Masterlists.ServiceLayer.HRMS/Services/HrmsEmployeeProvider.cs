@@ -82,7 +82,7 @@ namespace Pms.Masterlists.ServiceLayer.HRMS.Services
 
         private static string ParsePayrollCode(string payrollCode, string site)
         {
-            if (payrollCode is not null)
+            if (!string.IsNullOrEmpty(payrollCode))
             {
                 string pCode = payrollCode.Split('-')[0].Replace("PAY", "P").Trim();
                 pCode = $"{site[0]}-{Regex.Match(pCode, "([BLKP]{1,2}[0-9]{1,2}A?)").Value}";

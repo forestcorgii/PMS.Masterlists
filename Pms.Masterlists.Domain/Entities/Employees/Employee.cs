@@ -18,6 +18,8 @@ namespace Pms.Masterlists.Domain.Entities.Employees
         public string Location { get; set; }
         [JsonProperty("jobcode")]
         public string JobCode { get; set; }
+        [JsonProperty("job_remarks")]
+        public string JobRemarks { get; set; }
         public string Site { get; set; }
         public string CompanyId { get; set; }
 
@@ -40,6 +42,26 @@ namespace Pms.Masterlists.Domain.Entities.Employees
                         DateResigned = dateResigned;
                     else
                         DateResigned = DateTime.Parse(value);
+                }
+            }
+        }
+        public DateTime DateHired { get; set; }
+        [JsonProperty("joined_date")]
+        public string DateHiredSetter
+        {
+            set
+            {
+                if (value == "" || value == "0000-00-00")
+                    DateHired = default;
+                else
+                {
+                    DateTime dateResigned;
+                    if (DateTime.TryParse(value, out dateResigned))
+                        DateHired = dateResigned;
+                    else if (DateTime.TryParseExact(value, new string[] { "MM/dd/yyyy", "M/dd/yyyy" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out dateResigned))
+                        DateHired = dateResigned;
+                    else
+                        DateHired = DateTime.Parse(value);
                 }
             }
         }
@@ -111,8 +133,20 @@ namespace Pms.Masterlists.Domain.Entities.Employees
         #endregion
 
         #region BANK
-        [JsonProperty("payroll_code")]
         public string PayrollCode { get; set; }
+
+        [JsonProperty("payroll_code")]
+        public string PayrollCodeSetter
+        {
+            set
+            {
+                value = value.ToUpper();
+                string[] valueArgs = value.Split("-");
+                PayrollCode = valueArgs[0];
+                if (valueArgs.Length > 1)
+                    BankSetter = valueArgs[1];
+            }
+        }
 
         [JsonProperty("card_number")]
         public string CardNumber { get; set; } = string.Empty;
@@ -122,11 +156,22 @@ namespace Pms.Masterlists.Domain.Entities.Employees
 
         public BankChoices Bank { get; set; }
 
-        [JsonProperty("bank_name")]
+        [JsonProperty("bank_category")]
+        public string BankCategorySetter
+        {
+            set
+            {
+                value = value.ToUpper();
+                if (value == "CHK" || value == "CHECK" || value == "CHEQUE")
+                    Bank = BankChoices.CHK;
+            }
+        }
+
         public string BankSetter
         {
             set
             {
+                value = value.ToUpper();
                 if (value == "LANDBANK" || value == "LBP")
                     Bank = BankChoices.LBP;
                 else if (value == "CHINABANK" || value == "CBC")
@@ -137,7 +182,7 @@ namespace Pms.Masterlists.Domain.Entities.Employees
                     Bank = BankChoices.MPALO;
                 else if (value == "MTAC")
                     Bank = BankChoices.MTAC;
-                else if (value == "CHK")
+                else if (value == "CHK" || value == "CHECK" || value == "CHEQUE")
                     Bank = BankChoices.CHK;
                 else if (value == "UCPB")
                     Bank = BankChoices.UCPB;
@@ -211,9 +256,14 @@ namespace Pms.Masterlists.Domain.Entities.Employees
         public List<InvalidFieldValueException> ValidateBankInformation(bool throwsException = true)
         {
             List<InvalidFieldValueException> exceptions = new();
+            if (!Active)// Ignore bank information if already resigned.
+                return exceptions;
 
             if (Bank != BankChoices.CHK && AccountNumber == string.Empty)
+            {
                 exceptions.Add(new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId, "Should not be blank."));
+                return exceptions;
+            }
             if (AccountNumber.Any(char.IsLetter))
                 exceptions.Add(new InvalidFieldValueException(nameof(AccountNumber), AccountNumber, EEId));
 

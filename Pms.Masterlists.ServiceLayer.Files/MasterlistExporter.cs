@@ -15,7 +15,7 @@ namespace Pms.Masterlists.ServiceLayer.Files
     {
 
 
-        public void StartExport(IEnumerable<Employee> employees, PayrollCode payrollCode)
+        public void StartExport(IEnumerable<Employee> employees, PayrollCode payrollCode, string remarks)
         {
             IWorkbook nWorkbook = new HSSFWorkbook();
             ISheet nSheet = nWorkbook.CreateSheet("Sheet1");
@@ -35,6 +35,8 @@ namespace Pms.Masterlists.ServiceLayer.Files
             string filename = "MASTER-ALL";
             if (payrollCode.PayrollCodeId != string.Empty)
                 filename = $"MASTER-{payrollCode.PayrollCodeId}";
+            if (remarks != string.Empty)
+                filename = $"{filename}-{remarks}";
 
             string fullname = $@"{filedirectory}\{filename}-{DateTime.Now:yyyyMMdd}.xls";
 
@@ -55,6 +57,7 @@ namespace Pms.Masterlists.ServiceLayer.Files
             row.CreateCell(Append(ref cellIndex)).SetCellValue("BANK");
             row.CreateCell(Append(ref cellIndex)).SetCellValue("ACCOUNT NUMBER");
             row.CreateCell(Append(ref cellIndex)).SetCellValue("CARD NUMBER");
+            row.CreateCell(Append(ref cellIndex)).SetCellValue("TIN");
             row.CreateCell(Append(ref cellIndex)).SetCellValue("SSS");
             row.CreateCell(Append(ref cellIndex)).SetCellValue("PHILHEALTH");
             row.CreateCell(Append(ref cellIndex)).SetCellValue("PAGIBIG");
@@ -72,6 +75,7 @@ namespace Pms.Masterlists.ServiceLayer.Files
             row.CreateCell(Append(ref cellIndex)).SetCellValue(employee.Bank.ToString());
             row.CreateCell(Append(ref cellIndex)).SetCellValue(employee.AccountNumber);
             row.CreateCell(Append(ref cellIndex)).SetCellValue(employee.CardNumber);
+            row.CreateCell(Append(ref cellIndex)).SetCellValue(employee.TIN);
             row.CreateCell(Append(ref cellIndex)).SetCellValue(employee.SSS);
             row.CreateCell(Append(ref cellIndex)).SetCellValue(employee.PhilHealth);
             row.CreateCell(Append(ref cellIndex)).SetCellValue(employee.Pagibig);

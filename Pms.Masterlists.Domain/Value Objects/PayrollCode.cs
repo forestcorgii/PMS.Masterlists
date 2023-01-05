@@ -9,24 +9,23 @@ namespace Pms.Masterlists.Domain
 {
     public class PayrollCode
     {
-        public string PayrollCodeId { get; set; }
-        public string Name { get; set; }
+        public string PayrollCodeId { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
-        public string CompanyId { get; set; }
-        //public CompanyView Company { get; set; }
-
-        public string Site { get; set; }
+        public string CompanyId { get; set; } = string.Empty;
+        
+        public string Site { get; set; } = string.Empty;
 
         public PayrollRegisterTypes Process { get; set; }
 
 
-
         public PayrollCode() { }
-
         public PayrollCode(string name, string site)
         {
             Name = name;
             Site = site;
+
+            PayrollCodeId = GenerateId(this);
         }
 
 

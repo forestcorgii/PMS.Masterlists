@@ -180,13 +180,16 @@ namespace Pms.Masterlists.ServiceLayer.EfCore
 
         public void ValidatePayrollCode(Employee employee, EmployeeDbContext Context)
         {
-            if (Context.PayrollCodes.Where(pc => pc.PayrollCodeId == employee.PayrollCode).FirstOrDefault() is PayrollCode payrollCode)
+            if (employee.JobRemarks != "BACKOUT")
             {
-                employee.CompanyId = payrollCode.CompanyId;
-                employee.Site = payrollCode.Site;
+                if (Context.PayrollCodes.Where(pc => pc.PayrollCodeId == employee.PayrollCode).FirstOrDefault() is PayrollCode payrollCode)
+                {
+                    employee.CompanyId = payrollCode.CompanyId;
+                    employee.Site = payrollCode.Site;
+                }
+                else
+                    throw new InvalidFieldValueException("Payroll Code", employee.PayrollCode, employee.EEId, "Unknown Payroll code.");
             }
-            else
-                throw new InvalidFieldValueException("Payroll Code", employee.PayrollCode, employee.EEId, "Unknown Payroll code.");
 
         }
 
@@ -203,10 +206,10 @@ namespace Pms.Masterlists.ServiceLayer.EfCore
                 hasDuplicateAccountNumber = Context.Employees.Where(ee => ee.EEId != employee.EEId && ee.AccountNumber == employee.AccountNumber).FirstOrDefault();
 
 
-            if (hasDuplicateAccountNumber is not null)
+            if (hasDuplicateAccountNumber is not null && !string.IsNullOrEmpty(hasDuplicateAccountNumber.AccountNumber))
                 throw new DuplicateBankInformationException(employee.EEId, hasDuplicateAccountNumber.EEId, "Account Number", hasDuplicateAccountNumber.AccountNumber);
 
-            if (hasDuplicateCardNumber is not null)
+            if (hasDuplicateCardNumber is not null && !string.IsNullOrEmpty(hasDuplicateAccountNumber.CardNumber))
                 throw new DuplicateBankInformationException(employee.EEId, hasDuplicateCardNumber.EEId, "Card Number", hasDuplicateCardNumber.CardNumber);
 
         }

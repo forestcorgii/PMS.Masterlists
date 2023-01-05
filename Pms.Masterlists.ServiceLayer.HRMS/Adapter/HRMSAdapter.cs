@@ -26,6 +26,7 @@ namespace Pms.Masterlists.ServiceLayer.HRMS.Adapter
         {
             try
             {
+                Parameter.BodyArgs["idno"] = eeId;
                 Parameter.BodyArgs["field"] = "acctg";
                 var content = new FormUrlEncodedContent(Parameter.BodyArgs);
 
